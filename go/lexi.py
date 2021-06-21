@@ -14,8 +14,9 @@ reserved = {
     'len' : 'LEN',
     'const' : 'CONST',
     'join' : 'JOIN',
-    'var' : 'VAR'
-    
+    'var' : 'VAR',
+    'type' : 'TYPE',
+    'struct' : 'STRUCT'
 }
 
 #list of tokens
@@ -50,7 +51,8 @@ tokens = [
     'RLLAVE',
     'COMMENT',
     'MULTI_COMMENT',
-    'POINTER'
+    'POINTER',
+    'STRUCT'
 ] +  list(reserved.values())
 
 def goLexer():  
@@ -110,9 +112,14 @@ def goLexer():
 
     def t_POINTER(t):
         r'[& | *][a-zA-Z_][a-zA-Z_0-9]*'
-        t.type = reserved.get(t.value, 'POINTER') #Check for reserverd words
+        t.type = reserved.get(t.value, 'POINTER') #Check for reserved words
         return t
     
+    def t_STRUCT(t):
+        r'type\s[a-zA-Z_]+\s struct\{ w* \}'
+        t.type = reserved.get(t.value, 'STRUCT') #Check for reserved words
+        return t
+
     def t_newline(t):
         r'\n+'
         t.lexer.lineno += len(t.value)
