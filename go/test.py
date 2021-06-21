@@ -1,17 +1,17 @@
 import lexi
 
-# Build the lexer
-lexer = lexi.lex()
+lexer = lexi.goLexer()
 
-data = '''
- [3 + 4 * 10
-   + -20 *2]
- '''
+data = """a = 45 * (5/5) - 1.5 
+
+/*
+
+cinco*/"""
  
  # Give the lexer some input
 lexer.input(data)
  
- # Tokenize
+# Tokenize
 while True:
     tok = lexer.token()
     if not tok: 
