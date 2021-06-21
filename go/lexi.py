@@ -1,8 +1,28 @@
 import ply.lex as lex
 
-#list of tokens
 
-tokens = (
+
+#palabras reservadas
+reserved = {
+    'if' : 'IF',
+    'else' : 'ELSE',
+    'while' : 'WHILE',
+    'switch' : 'SWITCH',
+    'for' : 'FOR',
+    'package' : 'PACKAGE',
+    'main' : 'MAIN',
+    'print' : 'PRINT',
+    'func' : 'FUNC',
+    'array' : 'ARRAY',
+    'len' : 'LEN',
+    'const' : 'CONST',
+    'join' : 'JOIN',
+    'var' : 'VAR'
+    
+}
+
+#list of tokens
+tokens = [
     'ID', 
     'BOOL', 
     'STRING',
@@ -33,11 +53,12 @@ tokens = (
     'RLLAVE',
     'COMMENT',
     'MULTI_COMMENT'
-)
+] +  list(reserved.values())
 
 def goLexer():  
     #rules
-    t_ID      = r'[a-zA-Z][a-zA-Z_0-9]*'
+    #t_ID      = r'[a-zA-Z][a-zA-Z_0-9]*'
+
     t_BOOL    = r'(true|false)'
     t_STRING  = r'\".*\"'
     t_PLUS    = r'\+'
@@ -68,6 +89,35 @@ def goLexer():
     t_ignore_COMMENT = r'//.*'
     t_ignore_MULTI_COMMENT = r'/\*\n*.*\n*\*/'
 
+    #Palabras Reservadas
+    #t_FOR   = r'for'
+    #t_PRINT = r'print'
+    #t_IF = r'if'
+    #t_ELSE = r'else'
+    #t_WHILE = r'while'
+    #t_SWITCH = r'switch'
+    #t_PACKAGE = r'package'
+    #t_MAIN = r'main'
+    #t_FUNC = r'func'
+    #t_ARRAY = r'array'
+    #t_LEN = r'len'
+    #t_CONST = r'const'
+    #t_JOIN = r'join'
+    #t_VAR = r'var'
+    
+    
+    
+
+    
+    
+
+
+
+    def t_ID(t):
+        r'[a-zA-Z_][a-zA-Z_0-9]*'
+        t.type = reserved.get(t.value,'ID')    # Check for reserved words
+        return t
+    
     def t_newline(t):
         r'\n+'
         t.lexer.lineno += len(t.value)
