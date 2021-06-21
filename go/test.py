@@ -2,7 +2,7 @@ import lexi
 
 lexer = lexi.goLexer()
 
-data = 'if=5'
+data = '*a'
  
  # Give the lexer some input
 lexer.input(data)

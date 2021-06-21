@@ -1,7 +1,5 @@
 import ply.lex as lex
 
-
-
 #palabras reservadas
 reserved = {
     'if' : 'IF',
@@ -51,7 +49,8 @@ tokens = [
     'LLLAVE',
     'RLLAVE',
     'COMMENT',
-    'MULTI_COMMENT'
+    'MULTI_COMMENT',
+    'POINTER'
 ] +  list(reserved.values())
 
 def goLexer():  
@@ -103,17 +102,15 @@ def goLexer():
     #t_JOIN = r'join'
     #t_VAR = r'var'
     
-    
-    
-
-    
-    
-
-
 
     def t_ID(t):
         r'[a-zA-Z_][a-zA-Z_0-9]*'
         t.type = reserved.get(t.value,'ID')    # Check for reserved words
+        return t
+
+    def t_POINTER(t):
+        r'[& | *][a-zA-Z_][a-zA-Z_0-9]*'
+        t.type = reserved.get(t.value, 'POINTER') #Check for reserverd words
         return t
     
     def t_newline(t):
