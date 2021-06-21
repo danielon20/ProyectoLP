@@ -1,5 +1,8 @@
 import ply.lex as lex
 
+# CARLOS QUINONEZ
+# INICIO
+
 #palabras reservadas
 reserved = {
     'if' : 'IF',
@@ -16,8 +19,17 @@ reserved = {
     'join' : 'JOIN',
     'var' : 'VAR',
     'type' : 'TYPE',
-    'struct' : 'STRUCT'
-    'interface' : 'INTERFACE'
+    'struct' : 'STRUCT',
+    'interface' : 'INTERFACE',
+    'int' : 'INT',
+    'byte' : 'BYTE',
+    'float32' : 'FLOAT32',
+    'float64' : 'FLOAT64',
+    'true' : 'TRUE',
+    'false' : "FALSE",
+    'bool' : 'BOOL',
+    'print' : "PRINT",
+    'scan' : 'SCAN'
 }
 
 #list of tokens
@@ -48,13 +60,20 @@ tokens = [
     'LPAREN',
     'RPAREN',
     'LCORCHE',
+
+# FIN
+
+# HECTOR VILLEGAS
+# INICIO
+
     'RCORCHE',
     'LLLAVE',
     'RLLAVE',
     'COMMENT',
     'MULTI_COMMENT',
     'POINTER',
-    'STRUCT'
+    'COMA',
+    'COLON'
 ] +  list(reserved.values())
 
 def goLexer():  
@@ -86,6 +105,13 @@ def goLexer():
     t_RCORCHE = r'\]'
     t_LLLAVE = r'\{'
     t_RLLAVE = r'\}'
+    t_COMA = r','
+    t_COLON = r';'
+
+# FIN
+
+# DANIEL VISCARRA
+# INICIO
 
     t_ignore = ' \t'
     t_ignore_COMMENT = r'//.*'
@@ -100,11 +126,6 @@ def goLexer():
     def t_POINTER(t):
         r'[& | *][a-zA-Z_][a-zA-Z_0-9]*'
         t.type = reserved.get(t.value, 'POINTER') #Check for reserved words
-        return t
-    
-    def t_STRUCT(t):
-        r'type\s[a-zA-Z_]+\s struct\{ w* \}'
-        t.type = reserved.get(t.value, 'STRUCT') #Check for reserved words
         return t
 
     def t_newline(t):
@@ -126,3 +147,5 @@ def goLexer():
         t.lexer.skip(1)
     
     return lex.lex()
+
+# FIN
