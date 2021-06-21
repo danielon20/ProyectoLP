@@ -17,6 +17,7 @@ reserved = {
     'var' : 'VAR',
     'type' : 'TYPE',
     'struct' : 'STRUCT'
+    'interface' : 'INTERFACE'
 }
 
 #list of tokens
@@ -43,6 +44,7 @@ tokens = [
     'OR',
     'NOT',
     'EQUAL',
+    'DEQUAL',
     'LPAREN',
     'RPAREN',
     'LCORCHE',
@@ -77,6 +79,7 @@ def goLexer():
     t_OR        = r'\|\|'
     t_NOT     = r'!'
     t_EQUAL   = r'='
+    t_DEQUAL = r':='
     t_LPAREN  = r'\('
     t_RPAREN  = r'\)'
     t_LCORCHE = r'\['
@@ -87,22 +90,6 @@ def goLexer():
     t_ignore = ' \t'
     t_ignore_COMMENT = r'//.*'
     t_ignore_MULTI_COMMENT = r'/\*\n*.*\n*\*/'
-
-    #Palabras Reservadas
-    #t_FOR   = r'for'
-    #t_PRINT = r'print'
-    #t_IF = r'if'
-    #t_ELSE = r'else'
-    #t_WHILE = r'while'
-    #t_SWITCH = r'switch'
-    #t_PACKAGE = r'package'
-    #t_MAIN = r'main'
-    #t_FUNC = r'func'
-    #t_ARRAY = r'array'
-    #t_LEN = r'len'
-    #t_CONST = r'const'
-    #t_JOIN = r'join'
-    #t_VAR = r'var'
     
 
     def t_ID(t):
