@@ -7,6 +7,7 @@ import ply.lex as lex
 reserved = {
     'if' : 'IF',
     'else' : 'ELSE',
+    'case' : 'CASE',
     'switch' : 'SWITCH',
     'for' : 'FOR',
     'package' : 'PACKAGE',
