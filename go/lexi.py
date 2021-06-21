@@ -6,7 +6,6 @@ import ply.lex as lex
 reserved = {
     'if' : 'IF',
     'else' : 'ELSE',
-    'while' : 'WHILE',
     'switch' : 'SWITCH',
     'for' : 'FOR',
     'package' : 'PACKAGE',
@@ -57,7 +56,6 @@ tokens = [
 
 def goLexer():  
     #rules
-    #t_ID      = r'[a-zA-Z][a-zA-Z_0-9]*'
 
     t_BOOL    = r'(true|false)'
     t_STRING  = r'\".*\"'

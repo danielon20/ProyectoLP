@@ -2,11 +2,7 @@ import lexi
 
 lexer = lexi.goLexer()
 
-data = """a = 45 * (5/5) - 1.5 
-
-/*
-
-cinco*/"""
+data = 'if=5'
  
  # Give the lexer some input
 lexer.input(data)
