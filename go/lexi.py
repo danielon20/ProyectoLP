@@ -33,7 +33,7 @@ reserved = {
     'float64' : 'FLOAT64',
     'true' : 'TRUE',
     'false' : "FALSE",
-    'bool' : 'BOOL',
+    #'bool' : 'BOOL',
     'print' : "PRINT",
     'scan' : 'SCAN'
 }
