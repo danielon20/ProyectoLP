@@ -23,7 +23,6 @@ Unused terminals:
     FLOAT
     FLOAT32
     FLOAT64
-    FOR
     FUNC
     GREATER
     GREATER_OR_EQUAL
@@ -34,7 +33,6 @@ Unused terminals:
     JOIN
     LCORCHE
     LEN
-    LLLAVE
     MAIN
     MAKE
     MAP
@@ -46,7 +44,6 @@ Unused terminals:
     PACKAGE
     POINTER
     RCORCHE
-    RLLAVE
     SCAN
     SMALLER
     SMALLER_OR_EQUAL
@@ -62,16 +59,18 @@ Grammar
 Rule 0     S' -> codigo
 Rule 1     codigo -> impresion
 Rule 2     codigo -> expression
-Rule 3     impresion -> PRINT LPAREN expression RPAREN
-Rule 4     expression -> expression PLUS term
-Rule 5     expression -> expression MINUS term
-Rule 6     expression -> term
-Rule 7     term -> term TIMES factor
-Rule 8     term -> term DIVIDE factor
-Rule 9     term -> factor
-Rule 10    factor -> INTEGER
-Rule 11    factor -> ID
-Rule 12    factor -> LPAREN expression RPAREN
+Rule 3     codigo -> cicloFor
+Rule 4     cicloFor -> FOR LLLAVE impresion RLLAVE
+Rule 5     impresion -> PRINT LPAREN expression RPAREN
+Rule 6     expression -> expression PLUS term
+Rule 7     expression -> expression MINUS term
+Rule 8     expression -> term
+Rule 9     term -> term TIMES factor
+Rule 10    term -> term DIVIDE factor
+Rule 11    term -> factor
+Rule 12    factor -> INTEGER
+Rule 13    factor -> ID
+Rule 14    factor -> LPAREN expression RPAREN
 
 Terminals, with rules where they appear
 
@@ -89,7 +88,7 @@ CONST                :
 COPY                 : 
 DECREASE             : 
 DEQUAL               : 
-DIVIDE               : 8
+DIVIDE               : 10
 ELSE                 : 
 EQUAL                : 
 EQUAL_COMPARE        : 
@@ -97,44 +96,44 @@ FALSE                :
 FLOAT                : 
 FLOAT32              : 
 FLOAT64              : 
-FOR                  : 
+FOR                  : 4
 FUNC                 : 
 GREATER              : 
 GREATER_OR_EQUAL     : 
-ID                   : 11
+ID                   : 13
 IF                   : 
 INCREASE             : 
 INT                  : 
-INTEGER              : 10
+INTEGER              : 12
 INTERFACE            : 
 JOIN                 : 
 LCORCHE              : 
 LEN                  : 
-LLLAVE               : 
-LPAREN               : 3 12
+LLLAVE               : 4
+LPAREN               : 5 14
 MAIN                 : 
 MAKE                 : 
 MAP                  : 
-MINUS                : 5
+MINUS                : 7
 MOD                  : 
 MULTI_COMMENT        : 
 NOT                  : 
 NOT_EQUAL            : 
 OR                   : 
 PACKAGE              : 
-PLUS                 : 4
+PLUS                 : 6
 POINTER              : 
-PRINT                : 3
+PRINT                : 5
 RCORCHE              : 
-RLLAVE               : 
-RPAREN               : 3 12
+RLLAVE               : 4
+RPAREN               : 5 14
 SCAN                 : 
 SMALLER              : 
 SMALLER_OR_EQUAL     : 
 STRING               : 
 STRUCT               : 
 SWITCH               : 
-TIMES                : 7
+TIMES                : 9
 TRUE                 : 
 TYPE                 : 
 VAR                  : 
@@ -142,11 +141,12 @@ error                :
 
 Nonterminals, with rules where they appear
 
+cicloFor             : 3
 codigo               : 0
-expression           : 2 3 4 5 12
-factor               : 7 8 9
-impresion            : 1
-term                 : 4 5 6 7 8
+expression           : 2 5 6 7 14
+factor               : 9 10 11
+impresion            : 1 4
+term                 : 6 7 8 9 10
 
 Parsing method: LALR
 
@@ -155,27 +155,31 @@ state 0
     (0) S' -> . codigo
     (1) codigo -> . impresion
     (2) codigo -> . expression
-    (3) impresion -> . PRINT LPAREN expression RPAREN
-    (4) expression -> . expression PLUS term
-    (5) expression -> . expression MINUS term
-    (6) expression -> . term
-    (7) term -> . term TIMES factor
-    (8) term -> . term DIVIDE factor
-    (9) term -> . factor
-    (10) factor -> . INTEGER
-    (11) factor -> . ID
-    (12) factor -> . LPAREN expression RPAREN
+    (3) codigo -> . cicloFor
+    (5) impresion -> . PRINT LPAREN expression RPAREN
+    (6) expression -> . expression PLUS term
+    (7) expression -> . expression MINUS term
+    (8) expression -> . term
+    (4) cicloFor -> . FOR LLLAVE impresion RLLAVE
+    (9) term -> . term TIMES factor
+    (10) term -> . term DIVIDE factor
+    (11) term -> . factor
+    (12) factor -> . INTEGER
+    (13) factor -> . ID
+    (14) factor -> . LPAREN expression RPAREN
 
-    PRINT           shift and go to state 4
-    INTEGER         shift and go to state 8
-    ID              shift and go to state 9
-    LPAREN          shift and go to state 5
+    PRINT           shift and go to state 5
+    FOR             shift and go to state 8
+    INTEGER         shift and go to state 10
+    ID              shift and go to state 11
+    LPAREN          shift and go to state 6
 
     codigo                         shift and go to state 1
     impresion                      shift and go to state 2
     expression                     shift and go to state 3
-    term                           shift and go to state 6
-    factor                         shift and go to state 7
+    cicloFor                       shift and go to state 4
+    term                           shift and go to state 7
+    factor                         shift and go to state 9
 
 state 1
 
@@ -193,262 +197,300 @@ state 2
 state 3
 
     (2) codigo -> expression .
-    (4) expression -> expression . PLUS term
-    (5) expression -> expression . MINUS term
+    (6) expression -> expression . PLUS term
+    (7) expression -> expression . MINUS term
 
     $end            reduce using rule 2 (codigo -> expression .)
-    PLUS            shift and go to state 10
-    MINUS           shift and go to state 11
+    PLUS            shift and go to state 12
+    MINUS           shift and go to state 13
 
 
 state 4
 
-    (3) impresion -> PRINT . LPAREN expression RPAREN
+    (3) codigo -> cicloFor .
 
-    LPAREN          shift and go to state 12
+    $end            reduce using rule 3 (codigo -> cicloFor .)
 
 
 state 5
 
-    (12) factor -> LPAREN . expression RPAREN
-    (4) expression -> . expression PLUS term
-    (5) expression -> . expression MINUS term
-    (6) expression -> . term
-    (7) term -> . term TIMES factor
-    (8) term -> . term DIVIDE factor
-    (9) term -> . factor
-    (10) factor -> . INTEGER
-    (11) factor -> . ID
-    (12) factor -> . LPAREN expression RPAREN
+    (5) impresion -> PRINT . LPAREN expression RPAREN
 
-    INTEGER         shift and go to state 8
-    ID              shift and go to state 9
-    LPAREN          shift and go to state 5
+    LPAREN          shift and go to state 14
 
-    expression                     shift and go to state 13
-    term                           shift and go to state 6
-    factor                         shift and go to state 7
 
 state 6
 
-    (6) expression -> term .
-    (7) term -> term . TIMES factor
-    (8) term -> term . DIVIDE factor
+    (14) factor -> LPAREN . expression RPAREN
+    (6) expression -> . expression PLUS term
+    (7) expression -> . expression MINUS term
+    (8) expression -> . term
+    (9) term -> . term TIMES factor
+    (10) term -> . term DIVIDE factor
+    (11) term -> . factor
+    (12) factor -> . INTEGER
+    (13) factor -> . ID
+    (14) factor -> . LPAREN expression RPAREN
 
-    PLUS            reduce using rule 6 (expression -> term .)
-    MINUS           reduce using rule 6 (expression -> term .)
-    $end            reduce using rule 6 (expression -> term .)
-    RPAREN          reduce using rule 6 (expression -> term .)
-    TIMES           shift and go to state 14
-    DIVIDE          shift and go to state 15
+    INTEGER         shift and go to state 10
+    ID              shift and go to state 11
+    LPAREN          shift and go to state 6
 
+    expression                     shift and go to state 15
+    term                           shift and go to state 7
+    factor                         shift and go to state 9
 
 state 7
 
-    (9) term -> factor .
+    (8) expression -> term .
+    (9) term -> term . TIMES factor
+    (10) term -> term . DIVIDE factor
 
-    TIMES           reduce using rule 9 (term -> factor .)
-    DIVIDE          reduce using rule 9 (term -> factor .)
-    PLUS            reduce using rule 9 (term -> factor .)
-    MINUS           reduce using rule 9 (term -> factor .)
-    $end            reduce using rule 9 (term -> factor .)
-    RPAREN          reduce using rule 9 (term -> factor .)
+    PLUS            reduce using rule 8 (expression -> term .)
+    MINUS           reduce using rule 8 (expression -> term .)
+    $end            reduce using rule 8 (expression -> term .)
+    RPAREN          reduce using rule 8 (expression -> term .)
+    TIMES           shift and go to state 16
+    DIVIDE          shift and go to state 17
 
 
 state 8
 
-    (10) factor -> INTEGER .
+    (4) cicloFor -> FOR . LLLAVE impresion RLLAVE
 
-    TIMES           reduce using rule 10 (factor -> INTEGER .)
-    DIVIDE          reduce using rule 10 (factor -> INTEGER .)
-    PLUS            reduce using rule 10 (factor -> INTEGER .)
-    MINUS           reduce using rule 10 (factor -> INTEGER .)
-    $end            reduce using rule 10 (factor -> INTEGER .)
-    RPAREN          reduce using rule 10 (factor -> INTEGER .)
+    LLLAVE          shift and go to state 18
 
 
 state 9
 
-    (11) factor -> ID .
+    (11) term -> factor .
 
-    TIMES           reduce using rule 11 (factor -> ID .)
-    DIVIDE          reduce using rule 11 (factor -> ID .)
-    PLUS            reduce using rule 11 (factor -> ID .)
-    MINUS           reduce using rule 11 (factor -> ID .)
-    $end            reduce using rule 11 (factor -> ID .)
-    RPAREN          reduce using rule 11 (factor -> ID .)
+    TIMES           reduce using rule 11 (term -> factor .)
+    DIVIDE          reduce using rule 11 (term -> factor .)
+    PLUS            reduce using rule 11 (term -> factor .)
+    MINUS           reduce using rule 11 (term -> factor .)
+    $end            reduce using rule 11 (term -> factor .)
+    RPAREN          reduce using rule 11 (term -> factor .)
 
 
 state 10
 
-    (4) expression -> expression PLUS . term
-    (7) term -> . term TIMES factor
-    (8) term -> . term DIVIDE factor
-    (9) term -> . factor
-    (10) factor -> . INTEGER
-    (11) factor -> . ID
-    (12) factor -> . LPAREN expression RPAREN
+    (12) factor -> INTEGER .
 
-    INTEGER         shift and go to state 8
-    ID              shift and go to state 9
-    LPAREN          shift and go to state 5
+    TIMES           reduce using rule 12 (factor -> INTEGER .)
+    DIVIDE          reduce using rule 12 (factor -> INTEGER .)
+    PLUS            reduce using rule 12 (factor -> INTEGER .)
+    MINUS           reduce using rule 12 (factor -> INTEGER .)
+    $end            reduce using rule 12 (factor -> INTEGER .)
+    RPAREN          reduce using rule 12 (factor -> INTEGER .)
 
-    term                           shift and go to state 16
-    factor                         shift and go to state 7
 
 state 11
 
-    (5) expression -> expression MINUS . term
-    (7) term -> . term TIMES factor
-    (8) term -> . term DIVIDE factor
-    (9) term -> . factor
-    (10) factor -> . INTEGER
-    (11) factor -> . ID
-    (12) factor -> . LPAREN expression RPAREN
+    (13) factor -> ID .
 
-    INTEGER         shift and go to state 8
-    ID              shift and go to state 9
-    LPAREN          shift and go to state 5
+    TIMES           reduce using rule 13 (factor -> ID .)
+    DIVIDE          reduce using rule 13 (factor -> ID .)
+    PLUS            reduce using rule 13 (factor -> ID .)
+    MINUS           reduce using rule 13 (factor -> ID .)
+    $end            reduce using rule 13 (factor -> ID .)
+    RPAREN          reduce using rule 13 (factor -> ID .)
 
-    term                           shift and go to state 17
-    factor                         shift and go to state 7
 
 state 12
 
-    (3) impresion -> PRINT LPAREN . expression RPAREN
-    (4) expression -> . expression PLUS term
-    (5) expression -> . expression MINUS term
-    (6) expression -> . term
-    (7) term -> . term TIMES factor
-    (8) term -> . term DIVIDE factor
-    (9) term -> . factor
-    (10) factor -> . INTEGER
-    (11) factor -> . ID
-    (12) factor -> . LPAREN expression RPAREN
+    (6) expression -> expression PLUS . term
+    (9) term -> . term TIMES factor
+    (10) term -> . term DIVIDE factor
+    (11) term -> . factor
+    (12) factor -> . INTEGER
+    (13) factor -> . ID
+    (14) factor -> . LPAREN expression RPAREN
 
-    INTEGER         shift and go to state 8
-    ID              shift and go to state 9
-    LPAREN          shift and go to state 5
+    INTEGER         shift and go to state 10
+    ID              shift and go to state 11
+    LPAREN          shift and go to state 6
 
-    expression                     shift and go to state 18
-    term                           shift and go to state 6
-    factor                         shift and go to state 7
+    term                           shift and go to state 19
+    factor                         shift and go to state 9
 
 state 13
 
-    (12) factor -> LPAREN expression . RPAREN
-    (4) expression -> expression . PLUS term
-    (5) expression -> expression . MINUS term
+    (7) expression -> expression MINUS . term
+    (9) term -> . term TIMES factor
+    (10) term -> . term DIVIDE factor
+    (11) term -> . factor
+    (12) factor -> . INTEGER
+    (13) factor -> . ID
+    (14) factor -> . LPAREN expression RPAREN
 
-    RPAREN          shift and go to state 19
-    PLUS            shift and go to state 10
-    MINUS           shift and go to state 11
+    INTEGER         shift and go to state 10
+    ID              shift and go to state 11
+    LPAREN          shift and go to state 6
 
+    term                           shift and go to state 20
+    factor                         shift and go to state 9
 
 state 14
 
-    (7) term -> term TIMES . factor
-    (10) factor -> . INTEGER
-    (11) factor -> . ID
-    (12) factor -> . LPAREN expression RPAREN
+    (5) impresion -> PRINT LPAREN . expression RPAREN
+    (6) expression -> . expression PLUS term
+    (7) expression -> . expression MINUS term
+    (8) expression -> . term
+    (9) term -> . term TIMES factor
+    (10) term -> . term DIVIDE factor
+    (11) term -> . factor
+    (12) factor -> . INTEGER
+    (13) factor -> . ID
+    (14) factor -> . LPAREN expression RPAREN
 
-    INTEGER         shift and go to state 8
-    ID              shift and go to state 9
-    LPAREN          shift and go to state 5
+    INTEGER         shift and go to state 10
+    ID              shift and go to state 11
+    LPAREN          shift and go to state 6
 
-    factor                         shift and go to state 20
+    expression                     shift and go to state 21
+    term                           shift and go to state 7
+    factor                         shift and go to state 9
 
 state 15
 
-    (8) term -> term DIVIDE . factor
-    (10) factor -> . INTEGER
-    (11) factor -> . ID
-    (12) factor -> . LPAREN expression RPAREN
+    (14) factor -> LPAREN expression . RPAREN
+    (6) expression -> expression . PLUS term
+    (7) expression -> expression . MINUS term
 
-    INTEGER         shift and go to state 8
-    ID              shift and go to state 9
-    LPAREN          shift and go to state 5
+    RPAREN          shift and go to state 22
+    PLUS            shift and go to state 12
+    MINUS           shift and go to state 13
 
-    factor                         shift and go to state 21
 
 state 16
 
-    (4) expression -> expression PLUS term .
-    (7) term -> term . TIMES factor
-    (8) term -> term . DIVIDE factor
+    (9) term -> term TIMES . factor
+    (12) factor -> . INTEGER
+    (13) factor -> . ID
+    (14) factor -> . LPAREN expression RPAREN
 
-    PLUS            reduce using rule 4 (expression -> expression PLUS term .)
-    MINUS           reduce using rule 4 (expression -> expression PLUS term .)
-    $end            reduce using rule 4 (expression -> expression PLUS term .)
-    RPAREN          reduce using rule 4 (expression -> expression PLUS term .)
-    TIMES           shift and go to state 14
-    DIVIDE          shift and go to state 15
+    INTEGER         shift and go to state 10
+    ID              shift and go to state 11
+    LPAREN          shift and go to state 6
 
+    factor                         shift and go to state 23
 
 state 17
 
-    (5) expression -> expression MINUS term .
-    (7) term -> term . TIMES factor
-    (8) term -> term . DIVIDE factor
+    (10) term -> term DIVIDE . factor
+    (12) factor -> . INTEGER
+    (13) factor -> . ID
+    (14) factor -> . LPAREN expression RPAREN
 
-    PLUS            reduce using rule 5 (expression -> expression MINUS term .)
-    MINUS           reduce using rule 5 (expression -> expression MINUS term .)
-    $end            reduce using rule 5 (expression -> expression MINUS term .)
-    RPAREN          reduce using rule 5 (expression -> expression MINUS term .)
-    TIMES           shift and go to state 14
-    DIVIDE          shift and go to state 15
+    INTEGER         shift and go to state 10
+    ID              shift and go to state 11
+    LPAREN          shift and go to state 6
 
+    factor                         shift and go to state 24
 
 state 18
 
-    (3) impresion -> PRINT LPAREN expression . RPAREN
-    (4) expression -> expression . PLUS term
-    (5) expression -> expression . MINUS term
+    (4) cicloFor -> FOR LLLAVE . impresion RLLAVE
+    (5) impresion -> . PRINT LPAREN expression RPAREN
 
-    RPAREN          shift and go to state 22
-    PLUS            shift and go to state 10
-    MINUS           shift and go to state 11
+    PRINT           shift and go to state 5
 
+    impresion                      shift and go to state 25
 
 state 19
 
-    (12) factor -> LPAREN expression RPAREN .
+    (6) expression -> expression PLUS term .
+    (9) term -> term . TIMES factor
+    (10) term -> term . DIVIDE factor
 
-    TIMES           reduce using rule 12 (factor -> LPAREN expression RPAREN .)
-    DIVIDE          reduce using rule 12 (factor -> LPAREN expression RPAREN .)
-    PLUS            reduce using rule 12 (factor -> LPAREN expression RPAREN .)
-    MINUS           reduce using rule 12 (factor -> LPAREN expression RPAREN .)
-    $end            reduce using rule 12 (factor -> LPAREN expression RPAREN .)
-    RPAREN          reduce using rule 12 (factor -> LPAREN expression RPAREN .)
+    PLUS            reduce using rule 6 (expression -> expression PLUS term .)
+    MINUS           reduce using rule 6 (expression -> expression PLUS term .)
+    $end            reduce using rule 6 (expression -> expression PLUS term .)
+    RPAREN          reduce using rule 6 (expression -> expression PLUS term .)
+    TIMES           shift and go to state 16
+    DIVIDE          shift and go to state 17
 
 
 state 20
 
-    (7) term -> term TIMES factor .
+    (7) expression -> expression MINUS term .
+    (9) term -> term . TIMES factor
+    (10) term -> term . DIVIDE factor
 
-    TIMES           reduce using rule 7 (term -> term TIMES factor .)
-    DIVIDE          reduce using rule 7 (term -> term TIMES factor .)
-    PLUS            reduce using rule 7 (term -> term TIMES factor .)
-    MINUS           reduce using rule 7 (term -> term TIMES factor .)
-    $end            reduce using rule 7 (term -> term TIMES factor .)
-    RPAREN          reduce using rule 7 (term -> term TIMES factor .)
+    PLUS            reduce using rule 7 (expression -> expression MINUS term .)
+    MINUS           reduce using rule 7 (expression -> expression MINUS term .)
+    $end            reduce using rule 7 (expression -> expression MINUS term .)
+    RPAREN          reduce using rule 7 (expression -> expression MINUS term .)
+    TIMES           shift and go to state 16
+    DIVIDE          shift and go to state 17
 
 
 state 21
 
-    (8) term -> term DIVIDE factor .
+    (5) impresion -> PRINT LPAREN expression . RPAREN
+    (6) expression -> expression . PLUS term
+    (7) expression -> expression . MINUS term
 
-    TIMES           reduce using rule 8 (term -> term DIVIDE factor .)
-    DIVIDE          reduce using rule 8 (term -> term DIVIDE factor .)
-    PLUS            reduce using rule 8 (term -> term DIVIDE factor .)
-    MINUS           reduce using rule 8 (term -> term DIVIDE factor .)
-    $end            reduce using rule 8 (term -> term DIVIDE factor .)
-    RPAREN          reduce using rule 8 (term -> term DIVIDE factor .)
+    RPAREN          shift and go to state 26
+    PLUS            shift and go to state 12
+    MINUS           shift and go to state 13
 
 
 state 22
 
-    (3) impresion -> PRINT LPAREN expression RPAREN .
+    (14) factor -> LPAREN expression RPAREN .
 
-    $end            reduce using rule 3 (impresion -> PRINT LPAREN expression RPAREN .)
+    TIMES           reduce using rule 14 (factor -> LPAREN expression RPAREN .)
+    DIVIDE          reduce using rule 14 (factor -> LPAREN expression RPAREN .)
+    PLUS            reduce using rule 14 (factor -> LPAREN expression RPAREN .)
+    MINUS           reduce using rule 14 (factor -> LPAREN expression RPAREN .)
+    $end            reduce using rule 14 (factor -> LPAREN expression RPAREN .)
+    RPAREN          reduce using rule 14 (factor -> LPAREN expression RPAREN .)
+
+
+state 23
+
+    (9) term -> term TIMES factor .
+
+    TIMES           reduce using rule 9 (term -> term TIMES factor .)
+    DIVIDE          reduce using rule 9 (term -> term TIMES factor .)
+    PLUS            reduce using rule 9 (term -> term TIMES factor .)
+    MINUS           reduce using rule 9 (term -> term TIMES factor .)
+    $end            reduce using rule 9 (term -> term TIMES factor .)
+    RPAREN          reduce using rule 9 (term -> term TIMES factor .)
+
+
+state 24
+
+    (10) term -> term DIVIDE factor .
+
+    TIMES           reduce using rule 10 (term -> term DIVIDE factor .)
+    DIVIDE          reduce using rule 10 (term -> term DIVIDE factor .)
+    PLUS            reduce using rule 10 (term -> term DIVIDE factor .)
+    MINUS           reduce using rule 10 (term -> term DIVIDE factor .)
+    $end            reduce using rule 10 (term -> term DIVIDE factor .)
+    RPAREN          reduce using rule 10 (term -> term DIVIDE factor .)
+
+
+state 25
+
+    (4) cicloFor -> FOR LLLAVE impresion . RLLAVE
+
+    RLLAVE          shift and go to state 27
+
+
+state 26
+
+    (5) impresion -> PRINT LPAREN expression RPAREN .
+
+    $end            reduce using rule 5 (impresion -> PRINT LPAREN expression RPAREN .)
+    RLLAVE          reduce using rule 5 (impresion -> PRINT LPAREN expression RPAREN .)
+
+
+state 27
+
+    (4) cicloFor -> FOR LLLAVE impresion RLLAVE .
+
+    $end            reduce using rule 4 (cicloFor -> FOR LLLAVE impresion RLLAVE .)
 

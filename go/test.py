@@ -14,7 +14,15 @@ from lexi import tokens
 
 def p_coddigo(p):
     '''codigo : impresion
-              | expression'''
+              | expression
+              | cicloFor'''
+
+
+
+def p_for(p):
+    'cicloFor : FOR LLLAVE impresion RLLAVE'
+
+
     
 def p_impresion(p):
     'impresion : PRINT LPAREN expression RPAREN'
