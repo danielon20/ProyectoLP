@@ -33,15 +33,14 @@ reserved = {
     'float64' : 'FLOAT64',
     'true' : 'TRUE',
     'false' : "FALSE",
-    #'bool' : 'BOOL',
+    'bool' : 'BOOL',
     'print' : "PRINT",
     'scan' : 'SCAN'
 }
 
 #list of tokens
 tokens = [
-    'ID', 
-    'BOOL', 
+    'ID',  
     'STRING',
     'INTEGER',
     'FLOAT',
@@ -85,7 +84,6 @@ tokens = [
 def goLexer():  
     #rules
 
-    t_BOOL    = r'(true|false)'
     t_STRING  = r'\".*\"'
     t_PLUS    = r'\+'
     t_MINUS   = r'-'
@@ -115,7 +113,6 @@ def goLexer():
     t_COLON = r';'
 
 # FIN
-
 # DANIEL VISCARRA
 # INICIO
 
@@ -139,12 +136,12 @@ def goLexer():
         t.lexer.lineno += len(t.value)
 
     def t_FLOAT(t):
-        r'\d+\.\d+'
+        r'([0-9] | [1-9][0-9]+)\.\d+'
         t.value = float(t.value)    
         return t
 
     def t_INTEGER(t):
-        r'\d+'
+        r'[0-9] | [1-9][0-9]+'
         t.value = int(t.value)    
         return t
 
