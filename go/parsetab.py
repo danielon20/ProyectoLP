@@ -6,9 +6,9 @@ _tabversion = '3.10'
 
 _lr_method = 'LALR'
 
-_lr_signature = 'AND APPEND ARRAY BOOL BYTE CAP CASE COLON COMA COMMENT CONST COPY DECREASE DEQUAL DIVIDE ELSE EQUAL EQUAL_COMPARE FALSE FLOAT FLOAT32 FLOAT64 FOR FUNC GREATER GREATER_OR_EQUAL ID IF INCREASE INT32 INT64 INTEGER INTERFACE JOIN LCORCHE LEN LLLAVE LPAREN MAIN MAKE MAP MINUS MOD MULTI_COMMENT NOT NOT_EQUAL OR PACKAGE PLUS POINTER PRINT RCORCHE RLLAVE RPAREN SCAN SMALLER SMALLER_OR_EQUAL STRING STRUCT SWITCH TIMES TRUE TYPE VARcodigo : impresion\n              | expression\n              | cicloFor cicloFor : FOR LLLAVE codigo RLLAVEimpresion : PRINT LPAREN expression RPARENexpression : expression PLUS termexpression : expression MINUS termexpression : termterm : term TIMES factorterm : term DIVIDE factorterm : factorfactor : INTEGERfactor : IDfactor : LPAREN expression RPAREN'
+_lr_signature = 'AND APPEND ARRAY BOOL BYTE CAP CASE COLON COMA COMMENT CONST COPY DECREASE DEQUAL DIVIDE ELSE EQUAL EQUAL_COMPARE FALSE FLOAT FLOAT32 FLOAT64 FOR FUNC GREATER GREATER_OR_EQUAL ID IF INCREASE INT32 INT64 INTEGER INTERFACE JOIN LCORCHE LEN LLLAVE LPAREN MAIN MAKE MAP MINUS MOD MULTI_COMMENT NOT NOT_EQUAL OR PACKAGE PLUS POINTER PRINT RCORCHE RLLAVE RPAREN SCAN SMALLER SMALLER_OR_EQUAL STRING STRUCT SWITCH TIMES TRUE TYPE VARcodigo : impresion\n              | expression\n              | cicloFor\n              | comparison\n              | logic_operationcicloFor : FOR LLLAVE codigo RLLAVEcomparison : value op value\n       value      : ID\n                  | expression\n       op         : GREATER\n                  | SMALLER\n                  | GREATER_OR_EQUAL\n                  | SMALLER_OR_EQUAL\n                  | EQUAL_COMPARE\n                  | NOT_EQUALlogic_operation : logic_value logic_op logic_value\n                       | negation\n\n       logic_value     : negation\n                       | comparison\n\n       negation        : NOT comparison\n                       | NOT ID\n                       \n       logic_op        : AND\n                       | ORimpresion : PRINT LPAREN expression RPARENexpression : expression PLUS termexpression : expression MINUS termexpression : termterm : term TIMES factorterm : term DIVIDE factorterm : factorfactor : INTEGERfactor : IDfactor : LPAREN expression RPAREN'
     
-_lr_action_items = {'PRINT':([0,18,],[5,5,]),'FOR':([0,18,],[8,8,]),'INTEGER':([0,6,12,13,14,16,17,18,],[10,10,10,10,10,10,10,10,]),'ID':([0,6,12,13,14,16,17,18,],[11,11,11,11,11,11,11,11,]),'LPAREN':([0,5,6,12,13,14,16,17,18,],[6,14,6,6,6,6,6,6,6,]),'$end':([1,2,3,4,7,9,10,11,19,20,22,23,24,26,27,],[0,-1,-2,-3,-8,-11,-12,-13,-6,-7,-14,-9,-10,-5,-4,]),'RLLAVE':([2,3,4,7,9,10,11,19,20,22,23,24,25,26,27,],[-1,-2,-3,-8,-11,-12,-13,-6,-7,-14,-9,-10,27,-5,-4,]),'PLUS':([3,7,9,10,11,15,19,20,21,22,23,24,],[12,-8,-11,-12,-13,12,-6,-7,12,-14,-9,-10,]),'MINUS':([3,7,9,10,11,15,19,20,21,22,23,24,],[13,-8,-11,-12,-13,13,-6,-7,13,-14,-9,-10,]),'RPAREN':([7,9,10,11,15,19,20,21,22,23,24,],[-8,-11,-12,-13,22,-6,-7,26,-14,-9,-10,]),'TIMES':([7,9,10,11,19,20,22,23,24,],[16,-11,-12,-13,16,16,-14,-9,-10,]),'DIVIDE':([7,9,10,11,19,20,22,23,24,],[17,-11,-12,-13,17,17,-14,-9,-10,]),'LLLAVE':([8,],[18,]),}
+_lr_action_items = {'PRINT':([0,25,],[7,7,]),'FOR':([0,25,],[10,10,]),'ID':([0,8,16,18,19,20,23,24,25,26,27,28,29,30,31,32,33,34,35,],[15,22,37,22,22,22,22,22,15,15,-10,-11,-12,-13,-14,-15,15,-22,-23,]),'NOT':([0,25,33,34,35,],[16,16,16,-22,-23,]),'INTEGER':([0,8,16,18,19,20,23,24,25,26,27,28,29,30,31,32,33,34,35,],[17,17,17,17,17,17,17,17,17,17,-10,-11,-12,-13,-14,-15,17,-22,-23,]),'LPAREN':([0,7,8,16,18,19,20,23,24,25,26,27,28,29,30,31,32,33,34,35,],[8,20,8,8,8,8,8,8,8,8,8,-10,-11,-12,-13,-14,-15,8,-22,-23,]),'$end':([1,2,3,4,5,6,9,13,14,15,17,22,36,37,38,39,40,42,43,44,46,47,48,49,50,51,],[0,-1,-2,-3,-4,-5,-27,-17,-30,-8,-31,-32,-20,-21,-9,-25,-26,-33,-28,-29,-7,-16,-18,-19,-24,-6,]),'RLLAVE':([2,3,4,5,6,9,13,14,15,17,22,36,37,38,39,40,42,43,44,45,46,47,48,49,50,51,],[-1,-2,-3,-4,-5,-27,-17,-30,-8,-31,-32,-20,-21,-9,-25,-26,-33,-28,-29,51,-7,-16,-18,-19,-24,-6,]),'PLUS':([3,9,14,15,17,21,22,37,38,39,40,41,42,43,44,],[18,-27,-30,-32,-31,18,-32,-32,18,-25,-26,18,-33,-28,-29,]),'MINUS':([3,9,14,15,17,21,22,37,38,39,40,41,42,43,44,],[19,-27,-30,-32,-31,19,-32,-32,19,-25,-26,19,-33,-28,-29,]),'GREATER':([3,9,11,14,15,17,22,37,38,39,40,42,43,44,],[-9,-27,27,-30,-8,-31,-32,-8,-9,-25,-26,-33,-28,-29,]),'SMALLER':([3,9,11,14,15,17,22,37,38,39,40,42,43,44,],[-9,-27,28,-30,-8,-31,-32,-8,-9,-25,-26,-33,-28,-29,]),'GREATER_OR_EQUAL':([3,9,11,14,15,17,22,37,38,39,40,42,43,44,],[-9,-27,29,-30,-8,-31,-32,-8,-9,-25,-26,-33,-28,-29,]),'SMALLER_OR_EQUAL':([3,9,11,14,15,17,22,37,38,39,40,42,43,44,],[-9,-27,30,-30,-8,-31,-32,-8,-9,-25,-26,-33,-28,-29,]),'EQUAL_COMPARE':([3,9,11,14,15,17,22,37,38,39,40,42,43,44,],[-9,-27,31,-30,-8,-31,-32,-8,-9,-25,-26,-33,-28,-29,]),'NOT_EQUAL':([3,9,11,14,15,17,22,37,38,39,40,42,43,44,],[-9,-27,32,-30,-8,-31,-32,-8,-9,-25,-26,-33,-28,-29,]),'AND':([5,9,12,13,14,15,17,22,36,37,38,39,40,42,43,44,46,],[-19,-27,34,-18,-30,-8,-31,-32,-20,-21,-9,-25,-26,-33,-28,-29,-7,]),'OR':([5,9,12,13,14,15,17,22,36,37,38,39,40,42,43,44,46,],[-19,-27,35,-18,-30,-8,-31,-32,-20,-21,-9,-25,-26,-33,-28,-29,-7,]),'RPAREN':([9,14,17,21,22,39,40,41,42,43,44,],[-27,-30,-31,42,-32,-25,-26,50,-33,-28,-29,]),'TIMES':([9,14,15,17,22,37,39,40,42,43,44,],[23,-30,-32,-31,-32,-32,23,23,-33,-28,-29,]),'DIVIDE':([9,14,15,17,22,37,39,40,42,43,44,],[24,-30,-32,-31,-32,-32,24,24,-33,-28,-29,]),'LLLAVE':([10,],[25,]),}
 
 _lr_action = {}
 for _k, _v in _lr_action_items.items():
@@ -17,7 +17,7 @@ for _k, _v in _lr_action_items.items():
       _lr_action[_x][_k] = _y
 del _lr_action_items
 
-_lr_goto_items = {'codigo':([0,18,],[1,25,]),'impresion':([0,18,],[2,2,]),'expression':([0,6,14,18,],[3,15,21,3,]),'cicloFor':([0,18,],[4,4,]),'term':([0,6,12,13,14,18,],[7,7,19,20,7,7,]),'factor':([0,6,12,13,14,16,17,18,],[9,9,9,9,9,23,24,9,]),}
+_lr_goto_items = {'codigo':([0,25,],[1,45,]),'impresion':([0,25,],[2,2,]),'expression':([0,8,16,20,25,26,33,],[3,21,38,41,3,38,38,]),'cicloFor':([0,25,],[4,4,]),'comparison':([0,16,25,33,],[5,36,5,49,]),'logic_operation':([0,25,],[6,6,]),'term':([0,8,16,18,19,20,25,26,33,],[9,9,9,39,40,9,9,9,9,]),'value':([0,16,25,26,33,],[11,11,11,46,11,]),'logic_value':([0,25,33,],[12,12,47,]),'negation':([0,25,33,],[13,13,48,]),'factor':([0,8,16,18,19,20,23,24,25,26,33,],[14,14,14,14,14,14,43,44,14,14,14,]),'op':([11,],[26,]),'logic_op':([12,],[33,]),}
 
 _lr_goto = {}
 for _k, _v in _lr_goto_items.items():
@@ -30,15 +30,34 @@ _lr_productions = [
   ('codigo -> impresion','codigo',1,'p_coddigo','syntactic.py',16),
   ('codigo -> expression','codigo',1,'p_coddigo','syntactic.py',17),
   ('codigo -> cicloFor','codigo',1,'p_coddigo','syntactic.py',18),
-  ('cicloFor -> FOR LLLAVE codigo RLLAVE','cicloFor',4,'p_for','syntactic.py',23),
-  ('impresion -> PRINT LPAREN expression RPAREN','impresion',4,'p_impresion','syntactic.py',43),
-  ('expression -> expression PLUS term','expression',3,'p_expression_plus','syntactic.py',48),
-  ('expression -> expression MINUS term','expression',3,'p_expression_minus','syntactic.py',52),
-  ('expression -> term','expression',1,'p_expression_term','syntactic.py',56),
-  ('term -> term TIMES factor','term',3,'p_term_times','syntactic.py',60),
-  ('term -> term DIVIDE factor','term',3,'p_term_div','syntactic.py',64),
-  ('term -> factor','term',1,'p_term_factor','syntactic.py',68),
-  ('factor -> INTEGER','factor',1,'p_factor_num','syntactic.py',72),
-  ('factor -> ID','factor',1,'p_factor_id','syntactic.py',75),
-  ('factor -> LPAREN expression RPAREN','factor',3,'p_factor_expr','syntactic.py',78),
+  ('codigo -> comparison','codigo',1,'p_coddigo','syntactic.py',19),
+  ('codigo -> logic_operation','codigo',1,'p_coddigo','syntactic.py',20),
+  ('cicloFor -> FOR LLLAVE codigo RLLAVE','cicloFor',4,'p_for','syntactic.py',25),
+  ('comparison -> value op value','comparison',3,'p_comparison','syntactic.py',28),
+  ('value -> ID','value',1,'p_comparison','syntactic.py',29),
+  ('value -> expression','value',1,'p_comparison','syntactic.py',30),
+  ('op -> GREATER','op',1,'p_comparison','syntactic.py',31),
+  ('op -> SMALLER','op',1,'p_comparison','syntactic.py',32),
+  ('op -> GREATER_OR_EQUAL','op',1,'p_comparison','syntactic.py',33),
+  ('op -> SMALLER_OR_EQUAL','op',1,'p_comparison','syntactic.py',34),
+  ('op -> EQUAL_COMPARE','op',1,'p_comparison','syntactic.py',35),
+  ('op -> NOT_EQUAL','op',1,'p_comparison','syntactic.py',36),
+  ('logic_operation -> logic_value logic_op logic_value','logic_operation',3,'p_logic_operation','syntactic.py',39),
+  ('logic_operation -> negation','logic_operation',1,'p_logic_operation','syntactic.py',40),
+  ('logic_value -> negation','logic_value',1,'p_logic_operation','syntactic.py',42),
+  ('logic_value -> comparison','logic_value',1,'p_logic_operation','syntactic.py',43),
+  ('negation -> NOT comparison','negation',2,'p_logic_operation','syntactic.py',45),
+  ('negation -> NOT ID','negation',2,'p_logic_operation','syntactic.py',46),
+  ('logic_op -> AND','logic_op',1,'p_logic_operation','syntactic.py',48),
+  ('logic_op -> OR','logic_op',1,'p_logic_operation','syntactic.py',49),
+  ('impresion -> PRINT LPAREN expression RPAREN','impresion',4,'p_impresion','syntactic.py',64),
+  ('expression -> expression PLUS term','expression',3,'p_expression_plus','syntactic.py',69),
+  ('expression -> expression MINUS term','expression',3,'p_expression_minus','syntactic.py',73),
+  ('expression -> term','expression',1,'p_expression_term','syntactic.py',77),
+  ('term -> term TIMES factor','term',3,'p_term_times','syntactic.py',81),
+  ('term -> term DIVIDE factor','term',3,'p_term_div','syntactic.py',85),
+  ('term -> factor','term',1,'p_term_factor','syntactic.py',89),
+  ('factor -> INTEGER','factor',1,'p_factor_num','syntactic.py',93),
+  ('factor -> ID','factor',1,'p_factor_id','syntactic.py',96),
+  ('factor -> LPAREN expression RPAREN','factor',3,'p_factor_expr','syntactic.py',99),
 ]

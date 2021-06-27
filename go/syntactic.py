@@ -15,17 +15,38 @@ from lexi import tokens
 def p_coddigo(p):
     '''codigo : impresion
               | expression
-              | cicloFor '''
+              | cicloFor
+              | comparison
+              | logic_operation'''
 
 
 
 def p_for(p):
     'cicloFor : FOR LLLAVE codigo RLLAVE'
 
+def p_comparison(p):
+    '''comparison : value op value
+       value      : ID
+                  | expression
+       op         : GREATER
+                  | SMALLER
+                  | GREATER_OR_EQUAL
+                  | SMALLER_OR_EQUAL
+                  | EQUAL_COMPARE
+                  | NOT_EQUAL'''
 
+def p_logic_operation(p):
+    '''logic_operation : logic_value logic_op logic_value
+                       | negation
 
+       logic_value     : negation
+                       | comparison
 
-
+       negation        : NOT comparison
+                       | NOT ID
+                       
+       logic_op        : AND
+                       | OR'''
 
 
 

@@ -2,7 +2,6 @@ Created by PLY version 3.11 (http://www.dabeaz.com/ply)
 
 Unused terminals:
 
-    AND
     APPEND
     ARRAY
     BOOL
@@ -18,14 +17,11 @@ Unused terminals:
     DEQUAL
     ELSE
     EQUAL
-    EQUAL_COMPARE
     FALSE
     FLOAT
     FLOAT32
     FLOAT64
     FUNC
-    GREATER
-    GREATER_OR_EQUAL
     IF
     INCREASE
     INT32
@@ -39,15 +35,10 @@ Unused terminals:
     MAP
     MOD
     MULTI_COMMENT
-    NOT
-    NOT_EQUAL
-    OR
     PACKAGE
     POINTER
     RCORCHE
     SCAN
-    SMALLER
-    SMALLER_OR_EQUAL
     STRING
     STRUCT
     SWITCH
@@ -61,21 +52,40 @@ Rule 0     S' -> codigo
 Rule 1     codigo -> impresion
 Rule 2     codigo -> expression
 Rule 3     codigo -> cicloFor
-Rule 4     cicloFor -> FOR LLLAVE codigo RLLAVE
-Rule 5     impresion -> PRINT LPAREN expression RPAREN
-Rule 6     expression -> expression PLUS term
-Rule 7     expression -> expression MINUS term
-Rule 8     expression -> term
-Rule 9     term -> term TIMES factor
-Rule 10    term -> term DIVIDE factor
-Rule 11    term -> factor
-Rule 12    factor -> INTEGER
-Rule 13    factor -> ID
-Rule 14    factor -> LPAREN expression RPAREN
+Rule 4     codigo -> comparison
+Rule 5     codigo -> logic_operation
+Rule 6     cicloFor -> FOR LLLAVE codigo RLLAVE
+Rule 7     comparison -> value op value
+Rule 8     value -> ID
+Rule 9     value -> expression
+Rule 10    op -> GREATER
+Rule 11    op -> SMALLER
+Rule 12    op -> GREATER_OR_EQUAL
+Rule 13    op -> SMALLER_OR_EQUAL
+Rule 14    op -> EQUAL_COMPARE
+Rule 15    op -> NOT_EQUAL
+Rule 16    logic_operation -> logic_value logic_op logic_value
+Rule 17    logic_operation -> negation
+Rule 18    logic_value -> negation
+Rule 19    logic_value -> comparison
+Rule 20    negation -> NOT comparison
+Rule 21    negation -> NOT ID
+Rule 22    logic_op -> AND
+Rule 23    logic_op -> OR
+Rule 24    impresion -> PRINT LPAREN expression RPAREN
+Rule 25    expression -> expression PLUS term
+Rule 26    expression -> expression MINUS term
+Rule 27    expression -> term
+Rule 28    term -> term TIMES factor
+Rule 29    term -> term DIVIDE factor
+Rule 30    term -> factor
+Rule 31    factor -> INTEGER
+Rule 32    factor -> ID
+Rule 33    factor -> LPAREN expression RPAREN
 
 Terminals, with rules where they appear
 
-AND                  : 
+AND                  : 22
 APPEND               : 
 ARRAY                : 
 BOOL                 : 
@@ -89,53 +99,53 @@ CONST                :
 COPY                 : 
 DECREASE             : 
 DEQUAL               : 
-DIVIDE               : 10
+DIVIDE               : 29
 ELSE                 : 
 EQUAL                : 
-EQUAL_COMPARE        : 
+EQUAL_COMPARE        : 14
 FALSE                : 
 FLOAT                : 
 FLOAT32              : 
 FLOAT64              : 
-FOR                  : 4
+FOR                  : 6
 FUNC                 : 
-GREATER              : 
-GREATER_OR_EQUAL     : 
-ID                   : 13
+GREATER              : 10
+GREATER_OR_EQUAL     : 12
+ID                   : 8 21 32
 IF                   : 
 INCREASE             : 
 INT32                : 
 INT64                : 
-INTEGER              : 12
+INTEGER              : 31
 INTERFACE            : 
 JOIN                 : 
 LCORCHE              : 
 LEN                  : 
-LLLAVE               : 4
-LPAREN               : 5 14
+LLLAVE               : 6
+LPAREN               : 24 33
 MAIN                 : 
 MAKE                 : 
 MAP                  : 
-MINUS                : 7
+MINUS                : 26
 MOD                  : 
 MULTI_COMMENT        : 
-NOT                  : 
-NOT_EQUAL            : 
-OR                   : 
+NOT                  : 20 21
+NOT_EQUAL            : 15
+OR                   : 23
 PACKAGE              : 
-PLUS                 : 6
+PLUS                 : 25
 POINTER              : 
-PRINT                : 5
+PRINT                : 24
 RCORCHE              : 
-RLLAVE               : 4
-RPAREN               : 5 14
+RLLAVE               : 6
+RPAREN               : 24 33
 SCAN                 : 
-SMALLER              : 
-SMALLER_OR_EQUAL     : 
+SMALLER              : 11
+SMALLER_OR_EQUAL     : 13
 STRING               : 
 STRUCT               : 
 SWITCH               : 
-TIMES                : 9
+TIMES                : 28
 TRUE                 : 
 TYPE                 : 
 VAR                  : 
@@ -144,11 +154,18 @@ error                :
 Nonterminals, with rules where they appear
 
 cicloFor             : 3
-codigo               : 4 0
-expression           : 2 5 6 7 14
-factor               : 9 10 11
+codigo               : 6 0
+comparison           : 4 19 20
+expression           : 2 9 24 25 26 33
+factor               : 28 29 30
 impresion            : 1
-term                 : 6 7 8 9 10
+logic_op             : 16
+logic_operation      : 5
+logic_value          : 16 16
+negation             : 17 18
+op                   : 7
+term                 : 25 26 27 28 29
+value                : 7 7
 
 Parsing method: LALR
 
@@ -158,30 +175,47 @@ state 0
     (1) codigo -> . impresion
     (2) codigo -> . expression
     (3) codigo -> . cicloFor
-    (5) impresion -> . PRINT LPAREN expression RPAREN
-    (6) expression -> . expression PLUS term
-    (7) expression -> . expression MINUS term
-    (8) expression -> . term
-    (4) cicloFor -> . FOR LLLAVE codigo RLLAVE
-    (9) term -> . term TIMES factor
-    (10) term -> . term DIVIDE factor
-    (11) term -> . factor
-    (12) factor -> . INTEGER
-    (13) factor -> . ID
-    (14) factor -> . LPAREN expression RPAREN
+    (4) codigo -> . comparison
+    (5) codigo -> . logic_operation
+    (24) impresion -> . PRINT LPAREN expression RPAREN
+    (25) expression -> . expression PLUS term
+    (26) expression -> . expression MINUS term
+    (27) expression -> . term
+    (6) cicloFor -> . FOR LLLAVE codigo RLLAVE
+    (7) comparison -> . value op value
+    (16) logic_operation -> . logic_value logic_op logic_value
+    (17) logic_operation -> . negation
+    (28) term -> . term TIMES factor
+    (29) term -> . term DIVIDE factor
+    (30) term -> . factor
+    (8) value -> . ID
+    (9) value -> . expression
+    (18) logic_value -> . negation
+    (19) logic_value -> . comparison
+    (20) negation -> . NOT comparison
+    (21) negation -> . NOT ID
+    (31) factor -> . INTEGER
+    (32) factor -> . ID
+    (33) factor -> . LPAREN expression RPAREN
 
-    PRINT           shift and go to state 5
-    FOR             shift and go to state 8
-    INTEGER         shift and go to state 10
-    ID              shift and go to state 11
-    LPAREN          shift and go to state 6
+    PRINT           shift and go to state 7
+    FOR             shift and go to state 10
+    ID              shift and go to state 15
+    NOT             shift and go to state 16
+    INTEGER         shift and go to state 17
+    LPAREN          shift and go to state 8
 
     codigo                         shift and go to state 1
     impresion                      shift and go to state 2
     expression                     shift and go to state 3
     cicloFor                       shift and go to state 4
-    term                           shift and go to state 7
-    factor                         shift and go to state 9
+    comparison                     shift and go to state 5
+    logic_operation                shift and go to state 6
+    term                           shift and go to state 9
+    value                          shift and go to state 11
+    logic_value                    shift and go to state 12
+    negation                       shift and go to state 13
+    factor                         shift and go to state 14
 
 state 1
 
@@ -200,13 +234,20 @@ state 2
 state 3
 
     (2) codigo -> expression .
-    (6) expression -> expression . PLUS term
-    (7) expression -> expression . MINUS term
+    (25) expression -> expression . PLUS term
+    (26) expression -> expression . MINUS term
+    (9) value -> expression .
 
     $end            reduce using rule 2 (codigo -> expression .)
     RLLAVE          reduce using rule 2 (codigo -> expression .)
-    PLUS            shift and go to state 12
-    MINUS           shift and go to state 13
+    PLUS            shift and go to state 18
+    MINUS           shift and go to state 19
+    GREATER         reduce using rule 9 (value -> expression .)
+    SMALLER         reduce using rule 9 (value -> expression .)
+    GREATER_OR_EQUAL reduce using rule 9 (value -> expression .)
+    SMALLER_OR_EQUAL reduce using rule 9 (value -> expression .)
+    EQUAL_COMPARE   reduce using rule 9 (value -> expression .)
+    NOT_EQUAL       reduce using rule 9 (value -> expression .)
 
 
 state 4
@@ -219,315 +260,770 @@ state 4
 
 state 5
 
-    (5) impresion -> PRINT . LPAREN expression RPAREN
+    (4) codigo -> comparison .
+    (19) logic_value -> comparison .
 
-    LPAREN          shift and go to state 14
+    $end            reduce using rule 4 (codigo -> comparison .)
+    RLLAVE          reduce using rule 4 (codigo -> comparison .)
+    AND             reduce using rule 19 (logic_value -> comparison .)
+    OR              reduce using rule 19 (logic_value -> comparison .)
 
 
 state 6
 
-    (14) factor -> LPAREN . expression RPAREN
-    (6) expression -> . expression PLUS term
-    (7) expression -> . expression MINUS term
-    (8) expression -> . term
-    (9) term -> . term TIMES factor
-    (10) term -> . term DIVIDE factor
-    (11) term -> . factor
-    (12) factor -> . INTEGER
-    (13) factor -> . ID
-    (14) factor -> . LPAREN expression RPAREN
+    (5) codigo -> logic_operation .
 
-    INTEGER         shift and go to state 10
-    ID              shift and go to state 11
-    LPAREN          shift and go to state 6
+    $end            reduce using rule 5 (codigo -> logic_operation .)
+    RLLAVE          reduce using rule 5 (codigo -> logic_operation .)
 
-    expression                     shift and go to state 15
-    term                           shift and go to state 7
-    factor                         shift and go to state 9
 
 state 7
 
-    (8) expression -> term .
-    (9) term -> term . TIMES factor
-    (10) term -> term . DIVIDE factor
+    (24) impresion -> PRINT . LPAREN expression RPAREN
 
-    PLUS            reduce using rule 8 (expression -> term .)
-    MINUS           reduce using rule 8 (expression -> term .)
-    $end            reduce using rule 8 (expression -> term .)
-    RPAREN          reduce using rule 8 (expression -> term .)
-    RLLAVE          reduce using rule 8 (expression -> term .)
-    TIMES           shift and go to state 16
-    DIVIDE          shift and go to state 17
+    LPAREN          shift and go to state 20
 
 
 state 8
 
-    (4) cicloFor -> FOR . LLLAVE codigo RLLAVE
+    (33) factor -> LPAREN . expression RPAREN
+    (25) expression -> . expression PLUS term
+    (26) expression -> . expression MINUS term
+    (27) expression -> . term
+    (28) term -> . term TIMES factor
+    (29) term -> . term DIVIDE factor
+    (30) term -> . factor
+    (31) factor -> . INTEGER
+    (32) factor -> . ID
+    (33) factor -> . LPAREN expression RPAREN
 
-    LLLAVE          shift and go to state 18
+    INTEGER         shift and go to state 17
+    ID              shift and go to state 22
+    LPAREN          shift and go to state 8
 
+    expression                     shift and go to state 21
+    term                           shift and go to state 9
+    factor                         shift and go to state 14
 
 state 9
 
-    (11) term -> factor .
+    (27) expression -> term .
+    (28) term -> term . TIMES factor
+    (29) term -> term . DIVIDE factor
 
-    TIMES           reduce using rule 11 (term -> factor .)
-    DIVIDE          reduce using rule 11 (term -> factor .)
-    PLUS            reduce using rule 11 (term -> factor .)
-    MINUS           reduce using rule 11 (term -> factor .)
-    $end            reduce using rule 11 (term -> factor .)
-    RPAREN          reduce using rule 11 (term -> factor .)
-    RLLAVE          reduce using rule 11 (term -> factor .)
+    PLUS            reduce using rule 27 (expression -> term .)
+    MINUS           reduce using rule 27 (expression -> term .)
+    $end            reduce using rule 27 (expression -> term .)
+    GREATER         reduce using rule 27 (expression -> term .)
+    SMALLER         reduce using rule 27 (expression -> term .)
+    GREATER_OR_EQUAL reduce using rule 27 (expression -> term .)
+    SMALLER_OR_EQUAL reduce using rule 27 (expression -> term .)
+    EQUAL_COMPARE   reduce using rule 27 (expression -> term .)
+    NOT_EQUAL       reduce using rule 27 (expression -> term .)
+    RPAREN          reduce using rule 27 (expression -> term .)
+    RLLAVE          reduce using rule 27 (expression -> term .)
+    AND             reduce using rule 27 (expression -> term .)
+    OR              reduce using rule 27 (expression -> term .)
+    TIMES           shift and go to state 23
+    DIVIDE          shift and go to state 24
 
 
 state 10
 
-    (12) factor -> INTEGER .
+    (6) cicloFor -> FOR . LLLAVE codigo RLLAVE
 
-    TIMES           reduce using rule 12 (factor -> INTEGER .)
-    DIVIDE          reduce using rule 12 (factor -> INTEGER .)
-    PLUS            reduce using rule 12 (factor -> INTEGER .)
-    MINUS           reduce using rule 12 (factor -> INTEGER .)
-    $end            reduce using rule 12 (factor -> INTEGER .)
-    RPAREN          reduce using rule 12 (factor -> INTEGER .)
-    RLLAVE          reduce using rule 12 (factor -> INTEGER .)
+    LLLAVE          shift and go to state 25
 
 
 state 11
 
-    (13) factor -> ID .
+    (7) comparison -> value . op value
+    (10) op -> . GREATER
+    (11) op -> . SMALLER
+    (12) op -> . GREATER_OR_EQUAL
+    (13) op -> . SMALLER_OR_EQUAL
+    (14) op -> . EQUAL_COMPARE
+    (15) op -> . NOT_EQUAL
 
-    TIMES           reduce using rule 13 (factor -> ID .)
-    DIVIDE          reduce using rule 13 (factor -> ID .)
-    PLUS            reduce using rule 13 (factor -> ID .)
-    MINUS           reduce using rule 13 (factor -> ID .)
-    $end            reduce using rule 13 (factor -> ID .)
-    RPAREN          reduce using rule 13 (factor -> ID .)
-    RLLAVE          reduce using rule 13 (factor -> ID .)
+    GREATER         shift and go to state 27
+    SMALLER         shift and go to state 28
+    GREATER_OR_EQUAL shift and go to state 29
+    SMALLER_OR_EQUAL shift and go to state 30
+    EQUAL_COMPARE   shift and go to state 31
+    NOT_EQUAL       shift and go to state 32
 
+    op                             shift and go to state 26
 
 state 12
 
-    (6) expression -> expression PLUS . term
-    (9) term -> . term TIMES factor
-    (10) term -> . term DIVIDE factor
-    (11) term -> . factor
-    (12) factor -> . INTEGER
-    (13) factor -> . ID
-    (14) factor -> . LPAREN expression RPAREN
+    (16) logic_operation -> logic_value . logic_op logic_value
+    (22) logic_op -> . AND
+    (23) logic_op -> . OR
 
-    INTEGER         shift and go to state 10
-    ID              shift and go to state 11
-    LPAREN          shift and go to state 6
+    AND             shift and go to state 34
+    OR              shift and go to state 35
 
-    term                           shift and go to state 19
-    factor                         shift and go to state 9
+    logic_op                       shift and go to state 33
 
 state 13
 
-    (7) expression -> expression MINUS . term
-    (9) term -> . term TIMES factor
-    (10) term -> . term DIVIDE factor
-    (11) term -> . factor
-    (12) factor -> . INTEGER
-    (13) factor -> . ID
-    (14) factor -> . LPAREN expression RPAREN
+    (17) logic_operation -> negation .
+    (18) logic_value -> negation .
 
-    INTEGER         shift and go to state 10
-    ID              shift and go to state 11
-    LPAREN          shift and go to state 6
+    $end            reduce using rule 17 (logic_operation -> negation .)
+    RLLAVE          reduce using rule 17 (logic_operation -> negation .)
+    AND             reduce using rule 18 (logic_value -> negation .)
+    OR              reduce using rule 18 (logic_value -> negation .)
 
-    term                           shift and go to state 20
-    factor                         shift and go to state 9
 
 state 14
 
-    (5) impresion -> PRINT LPAREN . expression RPAREN
-    (6) expression -> . expression PLUS term
-    (7) expression -> . expression MINUS term
-    (8) expression -> . term
-    (9) term -> . term TIMES factor
-    (10) term -> . term DIVIDE factor
-    (11) term -> . factor
-    (12) factor -> . INTEGER
-    (13) factor -> . ID
-    (14) factor -> . LPAREN expression RPAREN
+    (30) term -> factor .
 
-    INTEGER         shift and go to state 10
-    ID              shift and go to state 11
-    LPAREN          shift and go to state 6
+    TIMES           reduce using rule 30 (term -> factor .)
+    DIVIDE          reduce using rule 30 (term -> factor .)
+    PLUS            reduce using rule 30 (term -> factor .)
+    MINUS           reduce using rule 30 (term -> factor .)
+    $end            reduce using rule 30 (term -> factor .)
+    GREATER         reduce using rule 30 (term -> factor .)
+    SMALLER         reduce using rule 30 (term -> factor .)
+    GREATER_OR_EQUAL reduce using rule 30 (term -> factor .)
+    SMALLER_OR_EQUAL reduce using rule 30 (term -> factor .)
+    EQUAL_COMPARE   reduce using rule 30 (term -> factor .)
+    NOT_EQUAL       reduce using rule 30 (term -> factor .)
+    RPAREN          reduce using rule 30 (term -> factor .)
+    RLLAVE          reduce using rule 30 (term -> factor .)
+    AND             reduce using rule 30 (term -> factor .)
+    OR              reduce using rule 30 (term -> factor .)
 
-    expression                     shift and go to state 21
-    term                           shift and go to state 7
-    factor                         shift and go to state 9
 
 state 15
 
-    (14) factor -> LPAREN expression . RPAREN
-    (6) expression -> expression . PLUS term
-    (7) expression -> expression . MINUS term
+    (8) value -> ID .
+    (32) factor -> ID .
 
-    RPAREN          shift and go to state 22
-    PLUS            shift and go to state 12
-    MINUS           shift and go to state 13
+  ! reduce/reduce conflict for $end resolved using rule 8 (value -> ID .)
+  ! reduce/reduce conflict for GREATER resolved using rule 8 (value -> ID .)
+  ! reduce/reduce conflict for SMALLER resolved using rule 8 (value -> ID .)
+  ! reduce/reduce conflict for GREATER_OR_EQUAL resolved using rule 8 (value -> ID .)
+  ! reduce/reduce conflict for SMALLER_OR_EQUAL resolved using rule 8 (value -> ID .)
+  ! reduce/reduce conflict for EQUAL_COMPARE resolved using rule 8 (value -> ID .)
+  ! reduce/reduce conflict for NOT_EQUAL resolved using rule 8 (value -> ID .)
+  ! reduce/reduce conflict for RLLAVE resolved using rule 8 (value -> ID .)
+  ! reduce/reduce conflict for AND resolved using rule 8 (value -> ID .)
+  ! reduce/reduce conflict for OR resolved using rule 8 (value -> ID .)
+    GREATER         reduce using rule 8 (value -> ID .)
+    SMALLER         reduce using rule 8 (value -> ID .)
+    GREATER_OR_EQUAL reduce using rule 8 (value -> ID .)
+    SMALLER_OR_EQUAL reduce using rule 8 (value -> ID .)
+    EQUAL_COMPARE   reduce using rule 8 (value -> ID .)
+    NOT_EQUAL       reduce using rule 8 (value -> ID .)
+    $end            reduce using rule 8 (value -> ID .)
+    AND             reduce using rule 8 (value -> ID .)
+    OR              reduce using rule 8 (value -> ID .)
+    RLLAVE          reduce using rule 8 (value -> ID .)
+    TIMES           reduce using rule 32 (factor -> ID .)
+    DIVIDE          reduce using rule 32 (factor -> ID .)
+    PLUS            reduce using rule 32 (factor -> ID .)
+    MINUS           reduce using rule 32 (factor -> ID .)
+
+  ! $end            [ reduce using rule 32 (factor -> ID .) ]
+  ! GREATER         [ reduce using rule 32 (factor -> ID .) ]
+  ! SMALLER         [ reduce using rule 32 (factor -> ID .) ]
+  ! GREATER_OR_EQUAL [ reduce using rule 32 (factor -> ID .) ]
+  ! SMALLER_OR_EQUAL [ reduce using rule 32 (factor -> ID .) ]
+  ! EQUAL_COMPARE   [ reduce using rule 32 (factor -> ID .) ]
+  ! NOT_EQUAL       [ reduce using rule 32 (factor -> ID .) ]
+  ! RLLAVE          [ reduce using rule 32 (factor -> ID .) ]
+  ! AND             [ reduce using rule 32 (factor -> ID .) ]
+  ! OR              [ reduce using rule 32 (factor -> ID .) ]
 
 
 state 16
 
-    (9) term -> term TIMES . factor
-    (12) factor -> . INTEGER
-    (13) factor -> . ID
-    (14) factor -> . LPAREN expression RPAREN
+    (20) negation -> NOT . comparison
+    (21) negation -> NOT . ID
+    (7) comparison -> . value op value
+    (8) value -> . ID
+    (9) value -> . expression
+    (25) expression -> . expression PLUS term
+    (26) expression -> . expression MINUS term
+    (27) expression -> . term
+    (28) term -> . term TIMES factor
+    (29) term -> . term DIVIDE factor
+    (30) term -> . factor
+    (31) factor -> . INTEGER
+    (32) factor -> . ID
+    (33) factor -> . LPAREN expression RPAREN
 
-    INTEGER         shift and go to state 10
-    ID              shift and go to state 11
-    LPAREN          shift and go to state 6
+    ID              shift and go to state 37
+    INTEGER         shift and go to state 17
+    LPAREN          shift and go to state 8
 
-    factor                         shift and go to state 23
+    comparison                     shift and go to state 36
+    value                          shift and go to state 11
+    expression                     shift and go to state 38
+    term                           shift and go to state 9
+    factor                         shift and go to state 14
 
 state 17
 
-    (10) term -> term DIVIDE . factor
-    (12) factor -> . INTEGER
-    (13) factor -> . ID
-    (14) factor -> . LPAREN expression RPAREN
+    (31) factor -> INTEGER .
 
-    INTEGER         shift and go to state 10
-    ID              shift and go to state 11
-    LPAREN          shift and go to state 6
+    TIMES           reduce using rule 31 (factor -> INTEGER .)
+    DIVIDE          reduce using rule 31 (factor -> INTEGER .)
+    PLUS            reduce using rule 31 (factor -> INTEGER .)
+    MINUS           reduce using rule 31 (factor -> INTEGER .)
+    $end            reduce using rule 31 (factor -> INTEGER .)
+    GREATER         reduce using rule 31 (factor -> INTEGER .)
+    SMALLER         reduce using rule 31 (factor -> INTEGER .)
+    GREATER_OR_EQUAL reduce using rule 31 (factor -> INTEGER .)
+    SMALLER_OR_EQUAL reduce using rule 31 (factor -> INTEGER .)
+    EQUAL_COMPARE   reduce using rule 31 (factor -> INTEGER .)
+    NOT_EQUAL       reduce using rule 31 (factor -> INTEGER .)
+    RPAREN          reduce using rule 31 (factor -> INTEGER .)
+    RLLAVE          reduce using rule 31 (factor -> INTEGER .)
+    AND             reduce using rule 31 (factor -> INTEGER .)
+    OR              reduce using rule 31 (factor -> INTEGER .)
 
-    factor                         shift and go to state 24
 
 state 18
 
-    (4) cicloFor -> FOR LLLAVE . codigo RLLAVE
-    (1) codigo -> . impresion
-    (2) codigo -> . expression
-    (3) codigo -> . cicloFor
-    (5) impresion -> . PRINT LPAREN expression RPAREN
-    (6) expression -> . expression PLUS term
-    (7) expression -> . expression MINUS term
-    (8) expression -> . term
-    (4) cicloFor -> . FOR LLLAVE codigo RLLAVE
-    (9) term -> . term TIMES factor
-    (10) term -> . term DIVIDE factor
-    (11) term -> . factor
-    (12) factor -> . INTEGER
-    (13) factor -> . ID
-    (14) factor -> . LPAREN expression RPAREN
+    (25) expression -> expression PLUS . term
+    (28) term -> . term TIMES factor
+    (29) term -> . term DIVIDE factor
+    (30) term -> . factor
+    (31) factor -> . INTEGER
+    (32) factor -> . ID
+    (33) factor -> . LPAREN expression RPAREN
 
-    PRINT           shift and go to state 5
-    FOR             shift and go to state 8
-    INTEGER         shift and go to state 10
-    ID              shift and go to state 11
-    LPAREN          shift and go to state 6
+    INTEGER         shift and go to state 17
+    ID              shift and go to state 22
+    LPAREN          shift and go to state 8
 
-    codigo                         shift and go to state 25
-    impresion                      shift and go to state 2
-    expression                     shift and go to state 3
-    cicloFor                       shift and go to state 4
-    term                           shift and go to state 7
-    factor                         shift and go to state 9
+    term                           shift and go to state 39
+    factor                         shift and go to state 14
 
 state 19
 
-    (6) expression -> expression PLUS term .
-    (9) term -> term . TIMES factor
-    (10) term -> term . DIVIDE factor
+    (26) expression -> expression MINUS . term
+    (28) term -> . term TIMES factor
+    (29) term -> . term DIVIDE factor
+    (30) term -> . factor
+    (31) factor -> . INTEGER
+    (32) factor -> . ID
+    (33) factor -> . LPAREN expression RPAREN
 
-    PLUS            reduce using rule 6 (expression -> expression PLUS term .)
-    MINUS           reduce using rule 6 (expression -> expression PLUS term .)
-    $end            reduce using rule 6 (expression -> expression PLUS term .)
-    RPAREN          reduce using rule 6 (expression -> expression PLUS term .)
-    RLLAVE          reduce using rule 6 (expression -> expression PLUS term .)
-    TIMES           shift and go to state 16
-    DIVIDE          shift and go to state 17
+    INTEGER         shift and go to state 17
+    ID              shift and go to state 22
+    LPAREN          shift and go to state 8
 
+    term                           shift and go to state 40
+    factor                         shift and go to state 14
 
 state 20
 
-    (7) expression -> expression MINUS term .
-    (9) term -> term . TIMES factor
-    (10) term -> term . DIVIDE factor
+    (24) impresion -> PRINT LPAREN . expression RPAREN
+    (25) expression -> . expression PLUS term
+    (26) expression -> . expression MINUS term
+    (27) expression -> . term
+    (28) term -> . term TIMES factor
+    (29) term -> . term DIVIDE factor
+    (30) term -> . factor
+    (31) factor -> . INTEGER
+    (32) factor -> . ID
+    (33) factor -> . LPAREN expression RPAREN
 
-    PLUS            reduce using rule 7 (expression -> expression MINUS term .)
-    MINUS           reduce using rule 7 (expression -> expression MINUS term .)
-    $end            reduce using rule 7 (expression -> expression MINUS term .)
-    RPAREN          reduce using rule 7 (expression -> expression MINUS term .)
-    RLLAVE          reduce using rule 7 (expression -> expression MINUS term .)
-    TIMES           shift and go to state 16
-    DIVIDE          shift and go to state 17
+    INTEGER         shift and go to state 17
+    ID              shift and go to state 22
+    LPAREN          shift and go to state 8
 
+    expression                     shift and go to state 41
+    term                           shift and go to state 9
+    factor                         shift and go to state 14
 
 state 21
 
-    (5) impresion -> PRINT LPAREN expression . RPAREN
-    (6) expression -> expression . PLUS term
-    (7) expression -> expression . MINUS term
+    (33) factor -> LPAREN expression . RPAREN
+    (25) expression -> expression . PLUS term
+    (26) expression -> expression . MINUS term
 
-    RPAREN          shift and go to state 26
-    PLUS            shift and go to state 12
-    MINUS           shift and go to state 13
+    RPAREN          shift and go to state 42
+    PLUS            shift and go to state 18
+    MINUS           shift and go to state 19
 
 
 state 22
 
-    (14) factor -> LPAREN expression RPAREN .
+    (32) factor -> ID .
 
-    TIMES           reduce using rule 14 (factor -> LPAREN expression RPAREN .)
-    DIVIDE          reduce using rule 14 (factor -> LPAREN expression RPAREN .)
-    PLUS            reduce using rule 14 (factor -> LPAREN expression RPAREN .)
-    MINUS           reduce using rule 14 (factor -> LPAREN expression RPAREN .)
-    $end            reduce using rule 14 (factor -> LPAREN expression RPAREN .)
-    RPAREN          reduce using rule 14 (factor -> LPAREN expression RPAREN .)
-    RLLAVE          reduce using rule 14 (factor -> LPAREN expression RPAREN .)
+    TIMES           reduce using rule 32 (factor -> ID .)
+    DIVIDE          reduce using rule 32 (factor -> ID .)
+    RPAREN          reduce using rule 32 (factor -> ID .)
+    PLUS            reduce using rule 32 (factor -> ID .)
+    MINUS           reduce using rule 32 (factor -> ID .)
+    $end            reduce using rule 32 (factor -> ID .)
+    GREATER         reduce using rule 32 (factor -> ID .)
+    SMALLER         reduce using rule 32 (factor -> ID .)
+    GREATER_OR_EQUAL reduce using rule 32 (factor -> ID .)
+    SMALLER_OR_EQUAL reduce using rule 32 (factor -> ID .)
+    EQUAL_COMPARE   reduce using rule 32 (factor -> ID .)
+    NOT_EQUAL       reduce using rule 32 (factor -> ID .)
+    RLLAVE          reduce using rule 32 (factor -> ID .)
+    AND             reduce using rule 32 (factor -> ID .)
+    OR              reduce using rule 32 (factor -> ID .)
 
 
 state 23
 
-    (9) term -> term TIMES factor .
+    (28) term -> term TIMES . factor
+    (31) factor -> . INTEGER
+    (32) factor -> . ID
+    (33) factor -> . LPAREN expression RPAREN
 
-    TIMES           reduce using rule 9 (term -> term TIMES factor .)
-    DIVIDE          reduce using rule 9 (term -> term TIMES factor .)
-    PLUS            reduce using rule 9 (term -> term TIMES factor .)
-    MINUS           reduce using rule 9 (term -> term TIMES factor .)
-    $end            reduce using rule 9 (term -> term TIMES factor .)
-    RPAREN          reduce using rule 9 (term -> term TIMES factor .)
-    RLLAVE          reduce using rule 9 (term -> term TIMES factor .)
+    INTEGER         shift and go to state 17
+    ID              shift and go to state 22
+    LPAREN          shift and go to state 8
 
+    factor                         shift and go to state 43
 
 state 24
 
-    (10) term -> term DIVIDE factor .
+    (29) term -> term DIVIDE . factor
+    (31) factor -> . INTEGER
+    (32) factor -> . ID
+    (33) factor -> . LPAREN expression RPAREN
 
-    TIMES           reduce using rule 10 (term -> term DIVIDE factor .)
-    DIVIDE          reduce using rule 10 (term -> term DIVIDE factor .)
-    PLUS            reduce using rule 10 (term -> term DIVIDE factor .)
-    MINUS           reduce using rule 10 (term -> term DIVIDE factor .)
-    $end            reduce using rule 10 (term -> term DIVIDE factor .)
-    RPAREN          reduce using rule 10 (term -> term DIVIDE factor .)
-    RLLAVE          reduce using rule 10 (term -> term DIVIDE factor .)
+    INTEGER         shift and go to state 17
+    ID              shift and go to state 22
+    LPAREN          shift and go to state 8
 
+    factor                         shift and go to state 44
 
 state 25
 
-    (4) cicloFor -> FOR LLLAVE codigo . RLLAVE
+    (6) cicloFor -> FOR LLLAVE . codigo RLLAVE
+    (1) codigo -> . impresion
+    (2) codigo -> . expression
+    (3) codigo -> . cicloFor
+    (4) codigo -> . comparison
+    (5) codigo -> . logic_operation
+    (24) impresion -> . PRINT LPAREN expression RPAREN
+    (25) expression -> . expression PLUS term
+    (26) expression -> . expression MINUS term
+    (27) expression -> . term
+    (6) cicloFor -> . FOR LLLAVE codigo RLLAVE
+    (7) comparison -> . value op value
+    (16) logic_operation -> . logic_value logic_op logic_value
+    (17) logic_operation -> . negation
+    (28) term -> . term TIMES factor
+    (29) term -> . term DIVIDE factor
+    (30) term -> . factor
+    (8) value -> . ID
+    (9) value -> . expression
+    (18) logic_value -> . negation
+    (19) logic_value -> . comparison
+    (20) negation -> . NOT comparison
+    (21) negation -> . NOT ID
+    (31) factor -> . INTEGER
+    (32) factor -> . ID
+    (33) factor -> . LPAREN expression RPAREN
 
-    RLLAVE          shift and go to state 27
+    PRINT           shift and go to state 7
+    FOR             shift and go to state 10
+    ID              shift and go to state 15
+    NOT             shift and go to state 16
+    INTEGER         shift and go to state 17
+    LPAREN          shift and go to state 8
 
+    codigo                         shift and go to state 45
+    impresion                      shift and go to state 2
+    expression                     shift and go to state 3
+    cicloFor                       shift and go to state 4
+    comparison                     shift and go to state 5
+    logic_operation                shift and go to state 6
+    term                           shift and go to state 9
+    value                          shift and go to state 11
+    logic_value                    shift and go to state 12
+    negation                       shift and go to state 13
+    factor                         shift and go to state 14
 
 state 26
 
-    (5) impresion -> PRINT LPAREN expression RPAREN .
+    (7) comparison -> value op . value
+    (8) value -> . ID
+    (9) value -> . expression
+    (25) expression -> . expression PLUS term
+    (26) expression -> . expression MINUS term
+    (27) expression -> . term
+    (28) term -> . term TIMES factor
+    (29) term -> . term DIVIDE factor
+    (30) term -> . factor
+    (31) factor -> . INTEGER
+    (32) factor -> . ID
+    (33) factor -> . LPAREN expression RPAREN
 
-    $end            reduce using rule 5 (impresion -> PRINT LPAREN expression RPAREN .)
-    RLLAVE          reduce using rule 5 (impresion -> PRINT LPAREN expression RPAREN .)
+    ID              shift and go to state 15
+    INTEGER         shift and go to state 17
+    LPAREN          shift and go to state 8
 
+    value                          shift and go to state 46
+    expression                     shift and go to state 38
+    term                           shift and go to state 9
+    factor                         shift and go to state 14
 
 state 27
 
-    (4) cicloFor -> FOR LLLAVE codigo RLLAVE .
+    (10) op -> GREATER .
 
-    $end            reduce using rule 4 (cicloFor -> FOR LLLAVE codigo RLLAVE .)
-    RLLAVE          reduce using rule 4 (cicloFor -> FOR LLLAVE codigo RLLAVE .)
+    ID              reduce using rule 10 (op -> GREATER .)
+    INTEGER         reduce using rule 10 (op -> GREATER .)
+    LPAREN          reduce using rule 10 (op -> GREATER .)
 
+
+state 28
+
+    (11) op -> SMALLER .
+
+    ID              reduce using rule 11 (op -> SMALLER .)
+    INTEGER         reduce using rule 11 (op -> SMALLER .)
+    LPAREN          reduce using rule 11 (op -> SMALLER .)
+
+
+state 29
+
+    (12) op -> GREATER_OR_EQUAL .
+
+    ID              reduce using rule 12 (op -> GREATER_OR_EQUAL .)
+    INTEGER         reduce using rule 12 (op -> GREATER_OR_EQUAL .)
+    LPAREN          reduce using rule 12 (op -> GREATER_OR_EQUAL .)
+
+
+state 30
+
+    (13) op -> SMALLER_OR_EQUAL .
+
+    ID              reduce using rule 13 (op -> SMALLER_OR_EQUAL .)
+    INTEGER         reduce using rule 13 (op -> SMALLER_OR_EQUAL .)
+    LPAREN          reduce using rule 13 (op -> SMALLER_OR_EQUAL .)
+
+
+state 31
+
+    (14) op -> EQUAL_COMPARE .
+
+    ID              reduce using rule 14 (op -> EQUAL_COMPARE .)
+    INTEGER         reduce using rule 14 (op -> EQUAL_COMPARE .)
+    LPAREN          reduce using rule 14 (op -> EQUAL_COMPARE .)
+
+
+state 32
+
+    (15) op -> NOT_EQUAL .
+
+    ID              reduce using rule 15 (op -> NOT_EQUAL .)
+    INTEGER         reduce using rule 15 (op -> NOT_EQUAL .)
+    LPAREN          reduce using rule 15 (op -> NOT_EQUAL .)
+
+
+state 33
+
+    (16) logic_operation -> logic_value logic_op . logic_value
+    (18) logic_value -> . negation
+    (19) logic_value -> . comparison
+    (20) negation -> . NOT comparison
+    (21) negation -> . NOT ID
+    (7) comparison -> . value op value
+    (8) value -> . ID
+    (9) value -> . expression
+    (25) expression -> . expression PLUS term
+    (26) expression -> . expression MINUS term
+    (27) expression -> . term
+    (28) term -> . term TIMES factor
+    (29) term -> . term DIVIDE factor
+    (30) term -> . factor
+    (31) factor -> . INTEGER
+    (32) factor -> . ID
+    (33) factor -> . LPAREN expression RPAREN
+
+    NOT             shift and go to state 16
+    ID              shift and go to state 15
+    INTEGER         shift and go to state 17
+    LPAREN          shift and go to state 8
+
+    logic_value                    shift and go to state 47
+    negation                       shift and go to state 48
+    comparison                     shift and go to state 49
+    value                          shift and go to state 11
+    expression                     shift and go to state 38
+    term                           shift and go to state 9
+    factor                         shift and go to state 14
+
+state 34
+
+    (22) logic_op -> AND .
+
+    NOT             reduce using rule 22 (logic_op -> AND .)
+    ID              reduce using rule 22 (logic_op -> AND .)
+    INTEGER         reduce using rule 22 (logic_op -> AND .)
+    LPAREN          reduce using rule 22 (logic_op -> AND .)
+
+
+state 35
+
+    (23) logic_op -> OR .
+
+    NOT             reduce using rule 23 (logic_op -> OR .)
+    ID              reduce using rule 23 (logic_op -> OR .)
+    INTEGER         reduce using rule 23 (logic_op -> OR .)
+    LPAREN          reduce using rule 23 (logic_op -> OR .)
+
+
+state 36
+
+    (20) negation -> NOT comparison .
+
+    $end            reduce using rule 20 (negation -> NOT comparison .)
+    AND             reduce using rule 20 (negation -> NOT comparison .)
+    OR              reduce using rule 20 (negation -> NOT comparison .)
+    RLLAVE          reduce using rule 20 (negation -> NOT comparison .)
+
+
+state 37
+
+    (21) negation -> NOT ID .
+    (8) value -> ID .
+    (32) factor -> ID .
+
+  ! reduce/reduce conflict for GREATER resolved using rule 8 (value -> ID .)
+  ! reduce/reduce conflict for SMALLER resolved using rule 8 (value -> ID .)
+  ! reduce/reduce conflict for GREATER_OR_EQUAL resolved using rule 8 (value -> ID .)
+  ! reduce/reduce conflict for SMALLER_OR_EQUAL resolved using rule 8 (value -> ID .)
+  ! reduce/reduce conflict for EQUAL_COMPARE resolved using rule 8 (value -> ID .)
+  ! reduce/reduce conflict for NOT_EQUAL resolved using rule 8 (value -> ID .)
+    $end            reduce using rule 21 (negation -> NOT ID .)
+    AND             reduce using rule 21 (negation -> NOT ID .)
+    OR              reduce using rule 21 (negation -> NOT ID .)
+    RLLAVE          reduce using rule 21 (negation -> NOT ID .)
+    GREATER         reduce using rule 8 (value -> ID .)
+    SMALLER         reduce using rule 8 (value -> ID .)
+    GREATER_OR_EQUAL reduce using rule 8 (value -> ID .)
+    SMALLER_OR_EQUAL reduce using rule 8 (value -> ID .)
+    EQUAL_COMPARE   reduce using rule 8 (value -> ID .)
+    NOT_EQUAL       reduce using rule 8 (value -> ID .)
+    TIMES           reduce using rule 32 (factor -> ID .)
+    DIVIDE          reduce using rule 32 (factor -> ID .)
+    PLUS            reduce using rule 32 (factor -> ID .)
+    MINUS           reduce using rule 32 (factor -> ID .)
+
+  ! GREATER         [ reduce using rule 32 (factor -> ID .) ]
+  ! SMALLER         [ reduce using rule 32 (factor -> ID .) ]
+  ! GREATER_OR_EQUAL [ reduce using rule 32 (factor -> ID .) ]
+  ! SMALLER_OR_EQUAL [ reduce using rule 32 (factor -> ID .) ]
+  ! EQUAL_COMPARE   [ reduce using rule 32 (factor -> ID .) ]
+  ! NOT_EQUAL       [ reduce using rule 32 (factor -> ID .) ]
+
+
+state 38
+
+    (9) value -> expression .
+    (25) expression -> expression . PLUS term
+    (26) expression -> expression . MINUS term
+
+    GREATER         reduce using rule 9 (value -> expression .)
+    SMALLER         reduce using rule 9 (value -> expression .)
+    GREATER_OR_EQUAL reduce using rule 9 (value -> expression .)
+    SMALLER_OR_EQUAL reduce using rule 9 (value -> expression .)
+    EQUAL_COMPARE   reduce using rule 9 (value -> expression .)
+    NOT_EQUAL       reduce using rule 9 (value -> expression .)
+    $end            reduce using rule 9 (value -> expression .)
+    AND             reduce using rule 9 (value -> expression .)
+    OR              reduce using rule 9 (value -> expression .)
+    RLLAVE          reduce using rule 9 (value -> expression .)
+    PLUS            shift and go to state 18
+    MINUS           shift and go to state 19
+
+
+state 39
+
+    (25) expression -> expression PLUS term .
+    (28) term -> term . TIMES factor
+    (29) term -> term . DIVIDE factor
+
+    PLUS            reduce using rule 25 (expression -> expression PLUS term .)
+    MINUS           reduce using rule 25 (expression -> expression PLUS term .)
+    $end            reduce using rule 25 (expression -> expression PLUS term .)
+    GREATER         reduce using rule 25 (expression -> expression PLUS term .)
+    SMALLER         reduce using rule 25 (expression -> expression PLUS term .)
+    GREATER_OR_EQUAL reduce using rule 25 (expression -> expression PLUS term .)
+    SMALLER_OR_EQUAL reduce using rule 25 (expression -> expression PLUS term .)
+    EQUAL_COMPARE   reduce using rule 25 (expression -> expression PLUS term .)
+    NOT_EQUAL       reduce using rule 25 (expression -> expression PLUS term .)
+    RPAREN          reduce using rule 25 (expression -> expression PLUS term .)
+    RLLAVE          reduce using rule 25 (expression -> expression PLUS term .)
+    AND             reduce using rule 25 (expression -> expression PLUS term .)
+    OR              reduce using rule 25 (expression -> expression PLUS term .)
+    TIMES           shift and go to state 23
+    DIVIDE          shift and go to state 24
+
+
+state 40
+
+    (26) expression -> expression MINUS term .
+    (28) term -> term . TIMES factor
+    (29) term -> term . DIVIDE factor
+
+    PLUS            reduce using rule 26 (expression -> expression MINUS term .)
+    MINUS           reduce using rule 26 (expression -> expression MINUS term .)
+    $end            reduce using rule 26 (expression -> expression MINUS term .)
+    GREATER         reduce using rule 26 (expression -> expression MINUS term .)
+    SMALLER         reduce using rule 26 (expression -> expression MINUS term .)
+    GREATER_OR_EQUAL reduce using rule 26 (expression -> expression MINUS term .)
+    SMALLER_OR_EQUAL reduce using rule 26 (expression -> expression MINUS term .)
+    EQUAL_COMPARE   reduce using rule 26 (expression -> expression MINUS term .)
+    NOT_EQUAL       reduce using rule 26 (expression -> expression MINUS term .)
+    RPAREN          reduce using rule 26 (expression -> expression MINUS term .)
+    RLLAVE          reduce using rule 26 (expression -> expression MINUS term .)
+    AND             reduce using rule 26 (expression -> expression MINUS term .)
+    OR              reduce using rule 26 (expression -> expression MINUS term .)
+    TIMES           shift and go to state 23
+    DIVIDE          shift and go to state 24
+
+
+state 41
+
+    (24) impresion -> PRINT LPAREN expression . RPAREN
+    (25) expression -> expression . PLUS term
+    (26) expression -> expression . MINUS term
+
+    RPAREN          shift and go to state 50
+    PLUS            shift and go to state 18
+    MINUS           shift and go to state 19
+
+
+state 42
+
+    (33) factor -> LPAREN expression RPAREN .
+
+    TIMES           reduce using rule 33 (factor -> LPAREN expression RPAREN .)
+    DIVIDE          reduce using rule 33 (factor -> LPAREN expression RPAREN .)
+    PLUS            reduce using rule 33 (factor -> LPAREN expression RPAREN .)
+    MINUS           reduce using rule 33 (factor -> LPAREN expression RPAREN .)
+    $end            reduce using rule 33 (factor -> LPAREN expression RPAREN .)
+    GREATER         reduce using rule 33 (factor -> LPAREN expression RPAREN .)
+    SMALLER         reduce using rule 33 (factor -> LPAREN expression RPAREN .)
+    GREATER_OR_EQUAL reduce using rule 33 (factor -> LPAREN expression RPAREN .)
+    SMALLER_OR_EQUAL reduce using rule 33 (factor -> LPAREN expression RPAREN .)
+    EQUAL_COMPARE   reduce using rule 33 (factor -> LPAREN expression RPAREN .)
+    NOT_EQUAL       reduce using rule 33 (factor -> LPAREN expression RPAREN .)
+    RPAREN          reduce using rule 33 (factor -> LPAREN expression RPAREN .)
+    RLLAVE          reduce using rule 33 (factor -> LPAREN expression RPAREN .)
+    AND             reduce using rule 33 (factor -> LPAREN expression RPAREN .)
+    OR              reduce using rule 33 (factor -> LPAREN expression RPAREN .)
+
+
+state 43
+
+    (28) term -> term TIMES factor .
+
+    TIMES           reduce using rule 28 (term -> term TIMES factor .)
+    DIVIDE          reduce using rule 28 (term -> term TIMES factor .)
+    PLUS            reduce using rule 28 (term -> term TIMES factor .)
+    MINUS           reduce using rule 28 (term -> term TIMES factor .)
+    $end            reduce using rule 28 (term -> term TIMES factor .)
+    GREATER         reduce using rule 28 (term -> term TIMES factor .)
+    SMALLER         reduce using rule 28 (term -> term TIMES factor .)
+    GREATER_OR_EQUAL reduce using rule 28 (term -> term TIMES factor .)
+    SMALLER_OR_EQUAL reduce using rule 28 (term -> term TIMES factor .)
+    EQUAL_COMPARE   reduce using rule 28 (term -> term TIMES factor .)
+    NOT_EQUAL       reduce using rule 28 (term -> term TIMES factor .)
+    RPAREN          reduce using rule 28 (term -> term TIMES factor .)
+    RLLAVE          reduce using rule 28 (term -> term TIMES factor .)
+    AND             reduce using rule 28 (term -> term TIMES factor .)
+    OR              reduce using rule 28 (term -> term TIMES factor .)
+
+
+state 44
+
+    (29) term -> term DIVIDE factor .
+
+    TIMES           reduce using rule 29 (term -> term DIVIDE factor .)
+    DIVIDE          reduce using rule 29 (term -> term DIVIDE factor .)
+    PLUS            reduce using rule 29 (term -> term DIVIDE factor .)
+    MINUS           reduce using rule 29 (term -> term DIVIDE factor .)
+    $end            reduce using rule 29 (term -> term DIVIDE factor .)
+    GREATER         reduce using rule 29 (term -> term DIVIDE factor .)
+    SMALLER         reduce using rule 29 (term -> term DIVIDE factor .)
+    GREATER_OR_EQUAL reduce using rule 29 (term -> term DIVIDE factor .)
+    SMALLER_OR_EQUAL reduce using rule 29 (term -> term DIVIDE factor .)
+    EQUAL_COMPARE   reduce using rule 29 (term -> term DIVIDE factor .)
+    NOT_EQUAL       reduce using rule 29 (term -> term DIVIDE factor .)
+    RPAREN          reduce using rule 29 (term -> term DIVIDE factor .)
+    RLLAVE          reduce using rule 29 (term -> term DIVIDE factor .)
+    AND             reduce using rule 29 (term -> term DIVIDE factor .)
+    OR              reduce using rule 29 (term -> term DIVIDE factor .)
+
+
+state 45
+
+    (6) cicloFor -> FOR LLLAVE codigo . RLLAVE
+
+    RLLAVE          shift and go to state 51
+
+
+state 46
+
+    (7) comparison -> value op value .
+
+    $end            reduce using rule 7 (comparison -> value op value .)
+    AND             reduce using rule 7 (comparison -> value op value .)
+    OR              reduce using rule 7 (comparison -> value op value .)
+    RLLAVE          reduce using rule 7 (comparison -> value op value .)
+
+
+state 47
+
+    (16) logic_operation -> logic_value logic_op logic_value .
+
+    $end            reduce using rule 16 (logic_operation -> logic_value logic_op logic_value .)
+    RLLAVE          reduce using rule 16 (logic_operation -> logic_value logic_op logic_value .)
+
+
+state 48
+
+    (18) logic_value -> negation .
+
+    $end            reduce using rule 18 (logic_value -> negation .)
+    RLLAVE          reduce using rule 18 (logic_value -> negation .)
+
+
+state 49
+
+    (19) logic_value -> comparison .
+
+    $end            reduce using rule 19 (logic_value -> comparison .)
+    RLLAVE          reduce using rule 19 (logic_value -> comparison .)
+
+
+state 50
+
+    (24) impresion -> PRINT LPAREN expression RPAREN .
+
+    $end            reduce using rule 24 (impresion -> PRINT LPAREN expression RPAREN .)
+    RLLAVE          reduce using rule 24 (impresion -> PRINT LPAREN expression RPAREN .)
+
+
+state 51
+
+    (6) cicloFor -> FOR LLLAVE codigo RLLAVE .
+
+    $end            reduce using rule 6 (cicloFor -> FOR LLLAVE codigo RLLAVE .)
+    RLLAVE          reduce using rule 6 (cicloFor -> FOR LLLAVE codigo RLLAVE .)
+
+WARNING: 
+WARNING: Conflicts:
+WARNING: 
+WARNING: reduce/reduce conflict in state 15 resolved using rule (value -> ID)
+WARNING: rejected rule (factor -> ID) in state 15
+WARNING: reduce/reduce conflict in state 37 resolved using rule (value -> ID)
+WARNING: rejected rule (factor -> ID) in state 37
