@@ -49,15 +49,11 @@ def p_logic_operation(p):
                        | OR'''
 
 
+def p_if(p):
+    'SenIF : IF LPAREN comparison RPAREN LLLAVE codigo RLLAVE'
 
-
-
-
-
-
-
-
-
+def p_struct(p):
+    'SenStruct : TYPE var STRUCT LLLAVE codigo RLLAVE'
 
     
 def p_impresion(p):
