@@ -137,12 +137,12 @@ def goLexer():
         t.lexer.lineno += len(t.value)
 
     def t_FLOAT(t):
-        r'([0-9] | [1-9][0-9]+)\.\d+'
+        r'([1-9][0-9]+|[0-9])\.\d+'
         t.value = float(t.value)    
         return t
 
     def t_INTEGER(t):
-        r'[0-9] | [1-9][0-9]+'
+        r'[1-9][0-9]+|[0-9]'
         t.value = int(t.value)    
         return t
 
