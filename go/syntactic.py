@@ -15,36 +15,57 @@ from lexi import tokens
 def p_coddigo(p):
     '''codigo : impresion
               | expression
-              | cicloFor'''
+              | cicloFor '''
 
 
 
 def p_for(p):
-    'cicloFor : FOR LLLAVE impresion RLLAVE'
+    'cicloFor : FOR LLLAVE codigo RLLAVE'
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
     
 def p_impresion(p):
     'impresion : PRINT LPAREN expression RPAREN'
 
-def p_expression_plus(p):
-    'expression : expression PLUS term'
+def p_operaciones(p):
+    '''expression : expression PLUS expression
+                  | expression MINUS expression
+                  | expression TIMES expression
+                  | expression DIVIDE expression'''
+
+#def p_expression_plus(p):
+    #'expression : expression PLUS term'
     
  
-def p_expression_minus(p):
-    'expression : expression MINUS term'
+#def p_expression_minus(p):
+    #'expression : expression MINUS term'
     
  
 def p_expression_term(p):
     'expression : term'
     
  
-def p_term_times(p):
-    'term : term TIMES factor'
+#def p_term_times(p):
+    #'term : term TIMES factor'
     
  
-def p_term_div(p):
-    'term : term DIVIDE factor'
+#def p_term_div(p):
+    #'term : term DIVIDE factor'
     
  
 def p_term_factor(p):

@@ -28,7 +28,8 @@ Unused terminals:
     GREATER_OR_EQUAL
     IF
     INCREASE
-    INT
+    INT32
+    INT64
     INTERFACE
     JOIN
     LCORCHE
@@ -60,13 +61,13 @@ Rule 0     S' -> codigo
 Rule 1     codigo -> impresion
 Rule 2     codigo -> expression
 Rule 3     codigo -> cicloFor
-Rule 4     cicloFor -> FOR LLLAVE impresion RLLAVE
+Rule 4     cicloFor -> FOR LLLAVE codigo RLLAVE
 Rule 5     impresion -> PRINT LPAREN expression RPAREN
-Rule 6     expression -> expression PLUS term
-Rule 7     expression -> expression MINUS term
-Rule 8     expression -> term
-Rule 9     term -> term TIMES factor
-Rule 10    term -> term DIVIDE factor
+Rule 6     expression -> expression PLUS expression
+Rule 7     expression -> expression MINUS expression
+Rule 8     expression -> expression TIMES expression
+Rule 9     expression -> expression DIVIDE expression
+Rule 10    expression -> term
 Rule 11    term -> factor
 Rule 12    factor -> INTEGER
 Rule 13    factor -> ID
@@ -88,7 +89,7 @@ CONST                :
 COPY                 : 
 DECREASE             : 
 DEQUAL               : 
-DIVIDE               : 10
+DIVIDE               : 9
 ELSE                 : 
 EQUAL                : 
 EQUAL_COMPARE        : 
@@ -103,7 +104,8 @@ GREATER_OR_EQUAL     :
 ID                   : 13
 IF                   : 
 INCREASE             : 
-INT                  : 
+INT32                : 
+INT64                : 
 INTEGER              : 12
 INTERFACE            : 
 JOIN                 : 
@@ -133,7 +135,7 @@ SMALLER_OR_EQUAL     :
 STRING               : 
 STRUCT               : 
 SWITCH               : 
-TIMES                : 9
+TIMES                : 8
 TRUE                 : 
 TYPE                 : 
 VAR                  : 
@@ -142,11 +144,11 @@ error                :
 Nonterminals, with rules where they appear
 
 cicloFor             : 3
-codigo               : 0
-expression           : 2 5 6 7 14
-factor               : 9 10 11
-impresion            : 1 4
-term                 : 6 7 8 9 10
+codigo               : 4 0
+expression           : 2 5 6 6 7 7 8 8 9 9 14
+factor               : 11
+impresion            : 1
+term                 : 10
 
 Parsing method: LALR
 
@@ -157,12 +159,12 @@ state 0
     (2) codigo -> . expression
     (3) codigo -> . cicloFor
     (5) impresion -> . PRINT LPAREN expression RPAREN
-    (6) expression -> . expression PLUS term
-    (7) expression -> . expression MINUS term
-    (8) expression -> . term
-    (4) cicloFor -> . FOR LLLAVE impresion RLLAVE
-    (9) term -> . term TIMES factor
-    (10) term -> . term DIVIDE factor
+    (6) expression -> . expression PLUS expression
+    (7) expression -> . expression MINUS expression
+    (8) expression -> . expression TIMES expression
+    (9) expression -> . expression DIVIDE expression
+    (10) expression -> . term
+    (4) cicloFor -> . FOR LLLAVE codigo RLLAVE
     (11) term -> . factor
     (12) factor -> . INTEGER
     (13) factor -> . ID
@@ -192,17 +194,23 @@ state 2
     (1) codigo -> impresion .
 
     $end            reduce using rule 1 (codigo -> impresion .)
+    RLLAVE          reduce using rule 1 (codigo -> impresion .)
 
 
 state 3
 
     (2) codigo -> expression .
-    (6) expression -> expression . PLUS term
-    (7) expression -> expression . MINUS term
+    (6) expression -> expression . PLUS expression
+    (7) expression -> expression . MINUS expression
+    (8) expression -> expression . TIMES expression
+    (9) expression -> expression . DIVIDE expression
 
     $end            reduce using rule 2 (codigo -> expression .)
+    RLLAVE          reduce using rule 2 (codigo -> expression .)
     PLUS            shift and go to state 12
     MINUS           shift and go to state 13
+    TIMES           shift and go to state 14
+    DIVIDE          shift and go to state 15
 
 
 state 4
@@ -210,23 +218,24 @@ state 4
     (3) codigo -> cicloFor .
 
     $end            reduce using rule 3 (codigo -> cicloFor .)
+    RLLAVE          reduce using rule 3 (codigo -> cicloFor .)
 
 
 state 5
 
     (5) impresion -> PRINT . LPAREN expression RPAREN
 
-    LPAREN          shift and go to state 14
+    LPAREN          shift and go to state 16
 
 
 state 6
 
     (14) factor -> LPAREN . expression RPAREN
-    (6) expression -> . expression PLUS term
-    (7) expression -> . expression MINUS term
-    (8) expression -> . term
-    (9) term -> . term TIMES factor
-    (10) term -> . term DIVIDE factor
+    (6) expression -> . expression PLUS expression
+    (7) expression -> . expression MINUS expression
+    (8) expression -> . expression TIMES expression
+    (9) expression -> . expression DIVIDE expression
+    (10) expression -> . term
     (11) term -> . factor
     (12) factor -> . INTEGER
     (13) factor -> . ID
@@ -236,27 +245,26 @@ state 6
     ID              shift and go to state 11
     LPAREN          shift and go to state 6
 
-    expression                     shift and go to state 15
+    expression                     shift and go to state 17
     term                           shift and go to state 7
     factor                         shift and go to state 9
 
 state 7
 
-    (8) expression -> term .
-    (9) term -> term . TIMES factor
-    (10) term -> term . DIVIDE factor
+    (10) expression -> term .
 
-    PLUS            reduce using rule 8 (expression -> term .)
-    MINUS           reduce using rule 8 (expression -> term .)
-    $end            reduce using rule 8 (expression -> term .)
-    RPAREN          reduce using rule 8 (expression -> term .)
-    TIMES           shift and go to state 16
-    DIVIDE          shift and go to state 17
+    PLUS            reduce using rule 10 (expression -> term .)
+    MINUS           reduce using rule 10 (expression -> term .)
+    TIMES           reduce using rule 10 (expression -> term .)
+    DIVIDE          reduce using rule 10 (expression -> term .)
+    $end            reduce using rule 10 (expression -> term .)
+    RPAREN          reduce using rule 10 (expression -> term .)
+    RLLAVE          reduce using rule 10 (expression -> term .)
 
 
 state 8
 
-    (4) cicloFor -> FOR . LLLAVE impresion RLLAVE
+    (4) cicloFor -> FOR . LLLAVE codigo RLLAVE
 
     LLLAVE          shift and go to state 18
 
@@ -265,43 +273,49 @@ state 9
 
     (11) term -> factor .
 
-    TIMES           reduce using rule 11 (term -> factor .)
-    DIVIDE          reduce using rule 11 (term -> factor .)
     PLUS            reduce using rule 11 (term -> factor .)
     MINUS           reduce using rule 11 (term -> factor .)
+    TIMES           reduce using rule 11 (term -> factor .)
+    DIVIDE          reduce using rule 11 (term -> factor .)
     $end            reduce using rule 11 (term -> factor .)
     RPAREN          reduce using rule 11 (term -> factor .)
+    RLLAVE          reduce using rule 11 (term -> factor .)
 
 
 state 10
 
     (12) factor -> INTEGER .
 
-    TIMES           reduce using rule 12 (factor -> INTEGER .)
-    DIVIDE          reduce using rule 12 (factor -> INTEGER .)
     PLUS            reduce using rule 12 (factor -> INTEGER .)
     MINUS           reduce using rule 12 (factor -> INTEGER .)
+    TIMES           reduce using rule 12 (factor -> INTEGER .)
+    DIVIDE          reduce using rule 12 (factor -> INTEGER .)
     $end            reduce using rule 12 (factor -> INTEGER .)
     RPAREN          reduce using rule 12 (factor -> INTEGER .)
+    RLLAVE          reduce using rule 12 (factor -> INTEGER .)
 
 
 state 11
 
     (13) factor -> ID .
 
-    TIMES           reduce using rule 13 (factor -> ID .)
-    DIVIDE          reduce using rule 13 (factor -> ID .)
     PLUS            reduce using rule 13 (factor -> ID .)
     MINUS           reduce using rule 13 (factor -> ID .)
+    TIMES           reduce using rule 13 (factor -> ID .)
+    DIVIDE          reduce using rule 13 (factor -> ID .)
     $end            reduce using rule 13 (factor -> ID .)
     RPAREN          reduce using rule 13 (factor -> ID .)
+    RLLAVE          reduce using rule 13 (factor -> ID .)
 
 
 state 12
 
-    (6) expression -> expression PLUS . term
-    (9) term -> . term TIMES factor
-    (10) term -> . term DIVIDE factor
+    (6) expression -> expression PLUS . expression
+    (6) expression -> . expression PLUS expression
+    (7) expression -> . expression MINUS expression
+    (8) expression -> . expression TIMES expression
+    (9) expression -> . expression DIVIDE expression
+    (10) expression -> . term
     (11) term -> . factor
     (12) factor -> . INTEGER
     (13) factor -> . ID
@@ -311,14 +325,18 @@ state 12
     ID              shift and go to state 11
     LPAREN          shift and go to state 6
 
-    term                           shift and go to state 19
+    expression                     shift and go to state 19
+    term                           shift and go to state 7
     factor                         shift and go to state 9
 
 state 13
 
-    (7) expression -> expression MINUS . term
-    (9) term -> . term TIMES factor
-    (10) term -> . term DIVIDE factor
+    (7) expression -> expression MINUS . expression
+    (6) expression -> . expression PLUS expression
+    (7) expression -> . expression MINUS expression
+    (8) expression -> . expression TIMES expression
+    (9) expression -> . expression DIVIDE expression
+    (10) expression -> . term
     (11) term -> . factor
     (12) factor -> . INTEGER
     (13) factor -> . ID
@@ -328,17 +346,18 @@ state 13
     ID              shift and go to state 11
     LPAREN          shift and go to state 6
 
-    term                           shift and go to state 20
+    expression                     shift and go to state 20
+    term                           shift and go to state 7
     factor                         shift and go to state 9
 
 state 14
 
-    (5) impresion -> PRINT LPAREN . expression RPAREN
-    (6) expression -> . expression PLUS term
-    (7) expression -> . expression MINUS term
-    (8) expression -> . term
-    (9) term -> . term TIMES factor
-    (10) term -> . term DIVIDE factor
+    (8) expression -> expression TIMES . expression
+    (6) expression -> . expression PLUS expression
+    (7) expression -> . expression MINUS expression
+    (8) expression -> . expression TIMES expression
+    (9) expression -> . expression DIVIDE expression
+    (10) expression -> . term
     (11) term -> . factor
     (12) factor -> . INTEGER
     (13) factor -> . ID
@@ -354,18 +373,34 @@ state 14
 
 state 15
 
-    (14) factor -> LPAREN expression . RPAREN
-    (6) expression -> expression . PLUS term
-    (7) expression -> expression . MINUS term
+    (9) expression -> expression DIVIDE . expression
+    (6) expression -> . expression PLUS expression
+    (7) expression -> . expression MINUS expression
+    (8) expression -> . expression TIMES expression
+    (9) expression -> . expression DIVIDE expression
+    (10) expression -> . term
+    (11) term -> . factor
+    (12) factor -> . INTEGER
+    (13) factor -> . ID
+    (14) factor -> . LPAREN expression RPAREN
 
-    RPAREN          shift and go to state 22
-    PLUS            shift and go to state 12
-    MINUS           shift and go to state 13
+    INTEGER         shift and go to state 10
+    ID              shift and go to state 11
+    LPAREN          shift and go to state 6
 
+    expression                     shift and go to state 22
+    term                           shift and go to state 7
+    factor                         shift and go to state 9
 
 state 16
 
-    (9) term -> term TIMES . factor
+    (5) impresion -> PRINT LPAREN . expression RPAREN
+    (6) expression -> . expression PLUS expression
+    (7) expression -> . expression MINUS expression
+    (8) expression -> . expression TIMES expression
+    (9) expression -> . expression DIVIDE expression
+    (10) expression -> . term
+    (11) term -> . factor
     (12) factor -> . INTEGER
     (13) factor -> . ID
     (14) factor -> . LPAREN expression RPAREN
@@ -374,108 +409,191 @@ state 16
     ID              shift and go to state 11
     LPAREN          shift and go to state 6
 
-    factor                         shift and go to state 23
+    expression                     shift and go to state 23
+    term                           shift and go to state 7
+    factor                         shift and go to state 9
 
 state 17
 
-    (10) term -> term DIVIDE . factor
+    (14) factor -> LPAREN expression . RPAREN
+    (6) expression -> expression . PLUS expression
+    (7) expression -> expression . MINUS expression
+    (8) expression -> expression . TIMES expression
+    (9) expression -> expression . DIVIDE expression
+
+    RPAREN          shift and go to state 24
+    PLUS            shift and go to state 12
+    MINUS           shift and go to state 13
+    TIMES           shift and go to state 14
+    DIVIDE          shift and go to state 15
+
+
+state 18
+
+    (4) cicloFor -> FOR LLLAVE . codigo RLLAVE
+    (1) codigo -> . impresion
+    (2) codigo -> . expression
+    (3) codigo -> . cicloFor
+    (5) impresion -> . PRINT LPAREN expression RPAREN
+    (6) expression -> . expression PLUS expression
+    (7) expression -> . expression MINUS expression
+    (8) expression -> . expression TIMES expression
+    (9) expression -> . expression DIVIDE expression
+    (10) expression -> . term
+    (4) cicloFor -> . FOR LLLAVE codigo RLLAVE
+    (11) term -> . factor
     (12) factor -> . INTEGER
     (13) factor -> . ID
     (14) factor -> . LPAREN expression RPAREN
 
+    PRINT           shift and go to state 5
+    FOR             shift and go to state 8
     INTEGER         shift and go to state 10
     ID              shift and go to state 11
     LPAREN          shift and go to state 6
 
-    factor                         shift and go to state 24
-
-state 18
-
-    (4) cicloFor -> FOR LLLAVE . impresion RLLAVE
-    (5) impresion -> . PRINT LPAREN expression RPAREN
-
-    PRINT           shift and go to state 5
-
-    impresion                      shift and go to state 25
+    codigo                         shift and go to state 25
+    impresion                      shift and go to state 2
+    expression                     shift and go to state 3
+    cicloFor                       shift and go to state 4
+    term                           shift and go to state 7
+    factor                         shift and go to state 9
 
 state 19
 
-    (6) expression -> expression PLUS term .
-    (9) term -> term . TIMES factor
-    (10) term -> term . DIVIDE factor
+    (6) expression -> expression PLUS expression .
+    (6) expression -> expression . PLUS expression
+    (7) expression -> expression . MINUS expression
+    (8) expression -> expression . TIMES expression
+    (9) expression -> expression . DIVIDE expression
 
-    PLUS            reduce using rule 6 (expression -> expression PLUS term .)
-    MINUS           reduce using rule 6 (expression -> expression PLUS term .)
-    $end            reduce using rule 6 (expression -> expression PLUS term .)
-    RPAREN          reduce using rule 6 (expression -> expression PLUS term .)
-    TIMES           shift and go to state 16
-    DIVIDE          shift and go to state 17
+  ! shift/reduce conflict for PLUS resolved as shift
+  ! shift/reduce conflict for MINUS resolved as shift
+  ! shift/reduce conflict for TIMES resolved as shift
+  ! shift/reduce conflict for DIVIDE resolved as shift
+    $end            reduce using rule 6 (expression -> expression PLUS expression .)
+    RPAREN          reduce using rule 6 (expression -> expression PLUS expression .)
+    RLLAVE          reduce using rule 6 (expression -> expression PLUS expression .)
+    PLUS            shift and go to state 12
+    MINUS           shift and go to state 13
+    TIMES           shift and go to state 14
+    DIVIDE          shift and go to state 15
+
+  ! PLUS            [ reduce using rule 6 (expression -> expression PLUS expression .) ]
+  ! MINUS           [ reduce using rule 6 (expression -> expression PLUS expression .) ]
+  ! TIMES           [ reduce using rule 6 (expression -> expression PLUS expression .) ]
+  ! DIVIDE          [ reduce using rule 6 (expression -> expression PLUS expression .) ]
 
 
 state 20
 
-    (7) expression -> expression MINUS term .
-    (9) term -> term . TIMES factor
-    (10) term -> term . DIVIDE factor
+    (7) expression -> expression MINUS expression .
+    (6) expression -> expression . PLUS expression
+    (7) expression -> expression . MINUS expression
+    (8) expression -> expression . TIMES expression
+    (9) expression -> expression . DIVIDE expression
 
-    PLUS            reduce using rule 7 (expression -> expression MINUS term .)
-    MINUS           reduce using rule 7 (expression -> expression MINUS term .)
-    $end            reduce using rule 7 (expression -> expression MINUS term .)
-    RPAREN          reduce using rule 7 (expression -> expression MINUS term .)
-    TIMES           shift and go to state 16
-    DIVIDE          shift and go to state 17
+  ! shift/reduce conflict for PLUS resolved as shift
+  ! shift/reduce conflict for MINUS resolved as shift
+  ! shift/reduce conflict for TIMES resolved as shift
+  ! shift/reduce conflict for DIVIDE resolved as shift
+    $end            reduce using rule 7 (expression -> expression MINUS expression .)
+    RPAREN          reduce using rule 7 (expression -> expression MINUS expression .)
+    RLLAVE          reduce using rule 7 (expression -> expression MINUS expression .)
+    PLUS            shift and go to state 12
+    MINUS           shift and go to state 13
+    TIMES           shift and go to state 14
+    DIVIDE          shift and go to state 15
+
+  ! PLUS            [ reduce using rule 7 (expression -> expression MINUS expression .) ]
+  ! MINUS           [ reduce using rule 7 (expression -> expression MINUS expression .) ]
+  ! TIMES           [ reduce using rule 7 (expression -> expression MINUS expression .) ]
+  ! DIVIDE          [ reduce using rule 7 (expression -> expression MINUS expression .) ]
 
 
 state 21
 
-    (5) impresion -> PRINT LPAREN expression . RPAREN
-    (6) expression -> expression . PLUS term
-    (7) expression -> expression . MINUS term
+    (8) expression -> expression TIMES expression .
+    (6) expression -> expression . PLUS expression
+    (7) expression -> expression . MINUS expression
+    (8) expression -> expression . TIMES expression
+    (9) expression -> expression . DIVIDE expression
 
-    RPAREN          shift and go to state 26
+  ! shift/reduce conflict for PLUS resolved as shift
+  ! shift/reduce conflict for MINUS resolved as shift
+  ! shift/reduce conflict for TIMES resolved as shift
+  ! shift/reduce conflict for DIVIDE resolved as shift
+    $end            reduce using rule 8 (expression -> expression TIMES expression .)
+    RPAREN          reduce using rule 8 (expression -> expression TIMES expression .)
+    RLLAVE          reduce using rule 8 (expression -> expression TIMES expression .)
     PLUS            shift and go to state 12
     MINUS           shift and go to state 13
+    TIMES           shift and go to state 14
+    DIVIDE          shift and go to state 15
+
+  ! PLUS            [ reduce using rule 8 (expression -> expression TIMES expression .) ]
+  ! MINUS           [ reduce using rule 8 (expression -> expression TIMES expression .) ]
+  ! TIMES           [ reduce using rule 8 (expression -> expression TIMES expression .) ]
+  ! DIVIDE          [ reduce using rule 8 (expression -> expression TIMES expression .) ]
 
 
 state 22
 
-    (14) factor -> LPAREN expression RPAREN .
+    (9) expression -> expression DIVIDE expression .
+    (6) expression -> expression . PLUS expression
+    (7) expression -> expression . MINUS expression
+    (8) expression -> expression . TIMES expression
+    (9) expression -> expression . DIVIDE expression
 
-    TIMES           reduce using rule 14 (factor -> LPAREN expression RPAREN .)
-    DIVIDE          reduce using rule 14 (factor -> LPAREN expression RPAREN .)
-    PLUS            reduce using rule 14 (factor -> LPAREN expression RPAREN .)
-    MINUS           reduce using rule 14 (factor -> LPAREN expression RPAREN .)
-    $end            reduce using rule 14 (factor -> LPAREN expression RPAREN .)
-    RPAREN          reduce using rule 14 (factor -> LPAREN expression RPAREN .)
+  ! shift/reduce conflict for PLUS resolved as shift
+  ! shift/reduce conflict for MINUS resolved as shift
+  ! shift/reduce conflict for TIMES resolved as shift
+  ! shift/reduce conflict for DIVIDE resolved as shift
+    $end            reduce using rule 9 (expression -> expression DIVIDE expression .)
+    RPAREN          reduce using rule 9 (expression -> expression DIVIDE expression .)
+    RLLAVE          reduce using rule 9 (expression -> expression DIVIDE expression .)
+    PLUS            shift and go to state 12
+    MINUS           shift and go to state 13
+    TIMES           shift and go to state 14
+    DIVIDE          shift and go to state 15
+
+  ! PLUS            [ reduce using rule 9 (expression -> expression DIVIDE expression .) ]
+  ! MINUS           [ reduce using rule 9 (expression -> expression DIVIDE expression .) ]
+  ! TIMES           [ reduce using rule 9 (expression -> expression DIVIDE expression .) ]
+  ! DIVIDE          [ reduce using rule 9 (expression -> expression DIVIDE expression .) ]
 
 
 state 23
 
-    (9) term -> term TIMES factor .
+    (5) impresion -> PRINT LPAREN expression . RPAREN
+    (6) expression -> expression . PLUS expression
+    (7) expression -> expression . MINUS expression
+    (8) expression -> expression . TIMES expression
+    (9) expression -> expression . DIVIDE expression
 
-    TIMES           reduce using rule 9 (term -> term TIMES factor .)
-    DIVIDE          reduce using rule 9 (term -> term TIMES factor .)
-    PLUS            reduce using rule 9 (term -> term TIMES factor .)
-    MINUS           reduce using rule 9 (term -> term TIMES factor .)
-    $end            reduce using rule 9 (term -> term TIMES factor .)
-    RPAREN          reduce using rule 9 (term -> term TIMES factor .)
+    RPAREN          shift and go to state 26
+    PLUS            shift and go to state 12
+    MINUS           shift and go to state 13
+    TIMES           shift and go to state 14
+    DIVIDE          shift and go to state 15
 
 
 state 24
 
-    (10) term -> term DIVIDE factor .
+    (14) factor -> LPAREN expression RPAREN .
 
-    TIMES           reduce using rule 10 (term -> term DIVIDE factor .)
-    DIVIDE          reduce using rule 10 (term -> term DIVIDE factor .)
-    PLUS            reduce using rule 10 (term -> term DIVIDE factor .)
-    MINUS           reduce using rule 10 (term -> term DIVIDE factor .)
-    $end            reduce using rule 10 (term -> term DIVIDE factor .)
-    RPAREN          reduce using rule 10 (term -> term DIVIDE factor .)
+    PLUS            reduce using rule 14 (factor -> LPAREN expression RPAREN .)
+    MINUS           reduce using rule 14 (factor -> LPAREN expression RPAREN .)
+    TIMES           reduce using rule 14 (factor -> LPAREN expression RPAREN .)
+    DIVIDE          reduce using rule 14 (factor -> LPAREN expression RPAREN .)
+    $end            reduce using rule 14 (factor -> LPAREN expression RPAREN .)
+    RPAREN          reduce using rule 14 (factor -> LPAREN expression RPAREN .)
+    RLLAVE          reduce using rule 14 (factor -> LPAREN expression RPAREN .)
 
 
 state 25
 
-    (4) cicloFor -> FOR LLLAVE impresion . RLLAVE
+    (4) cicloFor -> FOR LLLAVE codigo . RLLAVE
 
     RLLAVE          shift and go to state 27
 
@@ -490,7 +608,27 @@ state 26
 
 state 27
 
-    (4) cicloFor -> FOR LLLAVE impresion RLLAVE .
+    (4) cicloFor -> FOR LLLAVE codigo RLLAVE .
 
-    $end            reduce using rule 4 (cicloFor -> FOR LLLAVE impresion RLLAVE .)
+    $end            reduce using rule 4 (cicloFor -> FOR LLLAVE codigo RLLAVE .)
+    RLLAVE          reduce using rule 4 (cicloFor -> FOR LLLAVE codigo RLLAVE .)
 
+WARNING: 
+WARNING: Conflicts:
+WARNING: 
+WARNING: shift/reduce conflict for PLUS in state 19 resolved as shift
+WARNING: shift/reduce conflict for MINUS in state 19 resolved as shift
+WARNING: shift/reduce conflict for TIMES in state 19 resolved as shift
+WARNING: shift/reduce conflict for DIVIDE in state 19 resolved as shift
+WARNING: shift/reduce conflict for PLUS in state 20 resolved as shift
+WARNING: shift/reduce conflict for MINUS in state 20 resolved as shift
+WARNING: shift/reduce conflict for TIMES in state 20 resolved as shift
+WARNING: shift/reduce conflict for DIVIDE in state 20 resolved as shift
+WARNING: shift/reduce conflict for PLUS in state 21 resolved as shift
+WARNING: shift/reduce conflict for MINUS in state 21 resolved as shift
+WARNING: shift/reduce conflict for TIMES in state 21 resolved as shift
+WARNING: shift/reduce conflict for DIVIDE in state 21 resolved as shift
+WARNING: shift/reduce conflict for PLUS in state 22 resolved as shift
+WARNING: shift/reduce conflict for MINUS in state 22 resolved as shift
+WARNING: shift/reduce conflict for TIMES in state 22 resolved as shift
+WARNING: shift/reduce conflict for DIVIDE in state 22 resolved as shift
