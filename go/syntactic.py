@@ -17,7 +17,9 @@ def p_coddigo(p):
               | expression
               | cicloFor
               | comparison
-              | logic_operation'''
+              | logic_operation
+              | SenIF
+              | SenStruct'''
 
 
 
@@ -53,7 +55,18 @@ def p_if(p):
     'SenIF : IF LPAREN comparison RPAREN LLLAVE codigo RLLAVE'
 
 def p_struct(p):
-    'SenStruct : TYPE var STRUCT LLLAVE codigo RLLAVE'
+    '''SenStruct : TYPE ID STRUCT LLLAVE declaration RLLAVE
+    
+       declaration : tipo variable
+        
+       tipo        : INT32
+                   | INT64
+                   | FLOAT32
+                   | FLOAT64
+                   | STRING
+                   | BOOL
+       
+       variable    : ID'''
 
     
 def p_impresion(p):

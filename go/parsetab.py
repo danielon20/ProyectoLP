@@ -6,9 +6,9 @@ _tabversion = '3.10'
 
 _lr_method = 'LALR'
 
-_lr_signature = 'AND APPEND ARRAY BOOL BYTE CAP CASE COLON COMA COMMENT CONST COPY DECREASE DEQUAL DIVIDE ELSE EQUAL EQUAL_COMPARE FALSE FLOAT FLOAT32 FLOAT64 FOR FUNC GREATER GREATER_OR_EQUAL ID IF INCREASE INT32 INT64 INTEGER INTERFACE JOIN LCORCHE LEN LLLAVE LPAREN MAIN MAKE MAP MINUS MOD MULTI_COMMENT NOT NOT_EQUAL OR PACKAGE PLUS POINTER PRINT RCORCHE RLLAVE RPAREN SCAN SMALLER SMALLER_OR_EQUAL STRING STRUCT SWITCH TIMES TRUE TYPE VARcodigo : impresion\n              | expression\n              | cicloFor\n              | comparison\n              | logic_operationcicloFor : FOR LLLAVE codigo RLLAVEcomparison : value op value\n       value      : ID\n                  | expression\n       op         : GREATER\n                  | SMALLER\n                  | GREATER_OR_EQUAL\n                  | SMALLER_OR_EQUAL\n                  | EQUAL_COMPARE\n                  | NOT_EQUALlogic_operation : logic_value logic_op logic_value\n                       | negation\n\n       logic_value     : negation\n                       | comparison\n\n       negation        : NOT comparison\n                       | NOT ID\n                       \n       logic_op        : AND\n                       | ORimpresion : PRINT LPAREN expression RPARENexpression : expression PLUS termexpression : expression MINUS termexpression : termterm : term TIMES factorterm : term DIVIDE factorterm : factorfactor : INTEGERfactor : IDfactor : LPAREN expression RPAREN'
+_lr_signature = 'AND APPEND ARRAY BOOL BYTE CAP CASE COLON COMA COMMENT CONST COPY DECREASE DEQUAL DIVIDE ELSE EQUAL EQUAL_COMPARE FALSE FLOAT FLOAT32 FLOAT64 FOR FUNC GREATER GREATER_OR_EQUAL ID IF INCREASE INT32 INT64 INTEGER INTERFACE JOIN LCORCHE LEN LLLAVE LPAREN MAIN MAKE MAP MINUS MOD MULTI_COMMENT NOT NOT_EQUAL OR PACKAGE PLUS POINTER PRINT RCORCHE RLLAVE RPAREN SCAN SMALLER SMALLER_OR_EQUAL STRING STRUCT SWITCH TIMES TRUE TYPE VARcodigo : impresion\n              | expression\n              | cicloFor\n              | comparison\n              | logic_operation\n              | SenIF\n              | SenStructcicloFor : FOR LLLAVE codigo RLLAVEcomparison : value op value\n       value      : ID\n                  | expression\n       op         : GREATER\n                  | SMALLER\n                  | GREATER_OR_EQUAL\n                  | SMALLER_OR_EQUAL\n                  | EQUAL_COMPARE\n                  | NOT_EQUALlogic_operation : logic_value logic_op logic_value\n                       | negation\n\n       logic_value     : negation\n                       | comparison\n\n       negation        : NOT comparison\n                       | NOT ID\n                       \n       logic_op        : AND\n                       | ORSenIF : IF LPAREN comparison RPAREN LLLAVE codigo RLLAVESenStruct : TYPE ID STRUCT LLLAVE declaration RLLAVE\n    \n       declaration : tipo variable\n        \n       tipo        : INT32\n                   | INT64\n                   | FLOAT32\n                   | FLOAT64\n                   | STRING\n                   | BOOL\n       \n       variable    : IDimpresion : PRINT LPAREN expression RPARENexpression : expression PLUS termexpression : expression MINUS termexpression : termterm : term TIMES factorterm : term DIVIDE factorterm : factorfactor : INTEGERfactor : IDfactor : LPAREN expression RPAREN'
     
-_lr_action_items = {'PRINT':([0,25,],[7,7,]),'FOR':([0,25,],[10,10,]),'ID':([0,8,16,18,19,20,23,24,25,26,27,28,29,30,31,32,33,34,35,],[15,22,37,22,22,22,22,22,15,15,-10,-11,-12,-13,-14,-15,15,-22,-23,]),'NOT':([0,25,33,34,35,],[16,16,16,-22,-23,]),'INTEGER':([0,8,16,18,19,20,23,24,25,26,27,28,29,30,31,32,33,34,35,],[17,17,17,17,17,17,17,17,17,17,-10,-11,-12,-13,-14,-15,17,-22,-23,]),'LPAREN':([0,7,8,16,18,19,20,23,24,25,26,27,28,29,30,31,32,33,34,35,],[8,20,8,8,8,8,8,8,8,8,8,-10,-11,-12,-13,-14,-15,8,-22,-23,]),'$end':([1,2,3,4,5,6,9,13,14,15,17,22,36,37,38,39,40,42,43,44,46,47,48,49,50,51,],[0,-1,-2,-3,-4,-5,-27,-17,-30,-8,-31,-32,-20,-21,-9,-25,-26,-33,-28,-29,-7,-16,-18,-19,-24,-6,]),'RLLAVE':([2,3,4,5,6,9,13,14,15,17,22,36,37,38,39,40,42,43,44,45,46,47,48,49,50,51,],[-1,-2,-3,-4,-5,-27,-17,-30,-8,-31,-32,-20,-21,-9,-25,-26,-33,-28,-29,51,-7,-16,-18,-19,-24,-6,]),'PLUS':([3,9,14,15,17,21,22,37,38,39,40,41,42,43,44,],[18,-27,-30,-32,-31,18,-32,-32,18,-25,-26,18,-33,-28,-29,]),'MINUS':([3,9,14,15,17,21,22,37,38,39,40,41,42,43,44,],[19,-27,-30,-32,-31,19,-32,-32,19,-25,-26,19,-33,-28,-29,]),'GREATER':([3,9,11,14,15,17,22,37,38,39,40,42,43,44,],[-9,-27,27,-30,-8,-31,-32,-8,-9,-25,-26,-33,-28,-29,]),'SMALLER':([3,9,11,14,15,17,22,37,38,39,40,42,43,44,],[-9,-27,28,-30,-8,-31,-32,-8,-9,-25,-26,-33,-28,-29,]),'GREATER_OR_EQUAL':([3,9,11,14,15,17,22,37,38,39,40,42,43,44,],[-9,-27,29,-30,-8,-31,-32,-8,-9,-25,-26,-33,-28,-29,]),'SMALLER_OR_EQUAL':([3,9,11,14,15,17,22,37,38,39,40,42,43,44,],[-9,-27,30,-30,-8,-31,-32,-8,-9,-25,-26,-33,-28,-29,]),'EQUAL_COMPARE':([3,9,11,14,15,17,22,37,38,39,40,42,43,44,],[-9,-27,31,-30,-8,-31,-32,-8,-9,-25,-26,-33,-28,-29,]),'NOT_EQUAL':([3,9,11,14,15,17,22,37,38,39,40,42,43,44,],[-9,-27,32,-30,-8,-31,-32,-8,-9,-25,-26,-33,-28,-29,]),'AND':([5,9,12,13,14,15,17,22,36,37,38,39,40,42,43,44,46,],[-19,-27,34,-18,-30,-8,-31,-32,-20,-21,-9,-25,-26,-33,-28,-29,-7,]),'OR':([5,9,12,13,14,15,17,22,36,37,38,39,40,42,43,44,46,],[-19,-27,35,-18,-30,-8,-31,-32,-20,-21,-9,-25,-26,-33,-28,-29,-7,]),'RPAREN':([9,14,17,21,22,39,40,41,42,43,44,],[-27,-30,-31,42,-32,-25,-26,50,-33,-28,-29,]),'TIMES':([9,14,15,17,22,37,39,40,42,43,44,],[23,-30,-32,-31,-32,-32,23,23,-33,-28,-29,]),'DIVIDE':([9,14,15,17,22,37,39,40,42,43,44,],[24,-30,-32,-31,-32,-32,24,24,-33,-28,-29,]),'LLLAVE':([10,],[25,]),}
+_lr_action_items = {'PRINT':([0,29,62,],[9,9,9,]),'FOR':([0,29,62,],[12,12,12,]),'IF':([0,29,62,],[16,16,16,]),'TYPE':([0,29,62,],[17,17,17,]),'ID':([0,10,17,20,22,23,24,27,28,29,30,31,32,33,34,35,36,37,38,39,40,62,64,65,66,67,68,69,70,],[18,26,41,43,26,26,26,26,26,18,18,-12,-13,-14,-15,-16,-17,18,-24,-25,18,18,74,-29,-30,-31,-32,-33,-34,]),'NOT':([0,29,37,38,39,62,],[20,20,20,-24,-25,20,]),'INTEGER':([0,10,20,22,23,24,27,28,29,30,31,32,33,34,35,36,37,38,39,40,62,],[21,21,21,21,21,21,21,21,21,21,-12,-13,-14,-15,-16,-17,21,-24,-25,21,21,]),'LPAREN':([0,9,10,16,20,22,23,24,27,28,29,30,31,32,33,34,35,36,37,38,39,40,62,],[10,24,10,40,10,10,10,10,10,10,10,10,-12,-13,-14,-15,-16,-17,10,-24,-25,10,10,]),'$end':([1,2,3,4,5,6,7,8,11,15,18,19,21,26,42,43,44,45,46,48,49,50,52,53,54,55,58,59,72,75,],[0,-1,-2,-3,-4,-5,-6,-7,-39,-19,-10,-42,-43,-44,-22,-23,-11,-37,-38,-45,-40,-41,-9,-18,-20,-21,-36,-8,-27,-26,]),'RLLAVE':([2,3,4,5,6,7,8,11,15,18,19,21,26,42,43,44,45,46,48,49,50,51,52,53,54,55,58,59,63,71,72,73,74,75,],[-1,-2,-3,-4,-5,-6,-7,-39,-19,-10,-42,-43,-44,-22,-23,-11,-37,-38,-45,-40,-41,59,-9,-18,-20,-21,-36,-8,72,75,-27,-28,-35,-26,]),'PLUS':([3,11,18,19,21,25,26,43,44,45,46,47,48,49,50,],[22,-39,-44,-42,-43,22,-44,-44,22,-37,-38,22,-45,-40,-41,]),'MINUS':([3,11,18,19,21,25,26,43,44,45,46,47,48,49,50,],[23,-39,-44,-42,-43,23,-44,-44,23,-37,-38,23,-45,-40,-41,]),'GREATER':([3,11,13,18,19,21,26,43,44,45,46,48,49,50,],[-11,-39,31,-10,-42,-43,-44,-10,-11,-37,-38,-45,-40,-41,]),'SMALLER':([3,11,13,18,19,21,26,43,44,45,46,48,49,50,],[-11,-39,32,-10,-42,-43,-44,-10,-11,-37,-38,-45,-40,-41,]),'GREATER_OR_EQUAL':([3,11,13,18,19,21,26,43,44,45,46,48,49,50,],[-11,-39,33,-10,-42,-43,-44,-10,-11,-37,-38,-45,-40,-41,]),'SMALLER_OR_EQUAL':([3,11,13,18,19,21,26,43,44,45,46,48,49,50,],[-11,-39,34,-10,-42,-43,-44,-10,-11,-37,-38,-45,-40,-41,]),'EQUAL_COMPARE':([3,11,13,18,19,21,26,43,44,45,46,48,49,50,],[-11,-39,35,-10,-42,-43,-44,-10,-11,-37,-38,-45,-40,-41,]),'NOT_EQUAL':([3,11,13,18,19,21,26,43,44,45,46,48,49,50,],[-11,-39,36,-10,-42,-43,-44,-10,-11,-37,-38,-45,-40,-41,]),'AND':([5,11,14,15,18,19,21,26,42,43,44,45,46,48,49,50,52,],[-21,-39,38,-20,-10,-42,-43,-44,-22,-23,-11,-37,-38,-45,-40,-41,-9,]),'OR':([5,11,14,15,18,19,21,26,42,43,44,45,46,48,49,50,52,],[-21,-39,39,-20,-10,-42,-43,-44,-22,-23,-11,-37,-38,-45,-40,-41,-9,]),'RPAREN':([11,18,19,21,25,26,44,45,46,47,48,49,50,52,56,],[-39,-10,-42,-43,48,-44,-11,-37,-38,58,-45,-40,-41,-9,60,]),'TIMES':([11,18,19,21,26,43,45,46,48,49,50,],[27,-44,-42,-43,-44,-44,27,27,-45,-40,-41,]),'DIVIDE':([11,18,19,21,26,43,45,46,48,49,50,],[28,-44,-42,-43,-44,-44,28,28,-45,-40,-41,]),'LLLAVE':([12,57,60,],[29,61,62,]),'STRUCT':([41,],[57,]),'INT32':([61,],[65,]),'INT64':([61,],[66,]),'FLOAT32':([61,],[67,]),'FLOAT64':([61,],[68,]),'STRING':([61,],[69,]),'BOOL':([61,],[70,]),}
 
 _lr_action = {}
 for _k, _v in _lr_action_items.items():
@@ -17,7 +17,7 @@ for _k, _v in _lr_action_items.items():
       _lr_action[_x][_k] = _y
 del _lr_action_items
 
-_lr_goto_items = {'codigo':([0,25,],[1,45,]),'impresion':([0,25,],[2,2,]),'expression':([0,8,16,20,25,26,33,],[3,21,38,41,3,38,38,]),'cicloFor':([0,25,],[4,4,]),'comparison':([0,16,25,33,],[5,36,5,49,]),'logic_operation':([0,25,],[6,6,]),'term':([0,8,16,18,19,20,25,26,33,],[9,9,9,39,40,9,9,9,9,]),'value':([0,16,25,26,33,],[11,11,11,46,11,]),'logic_value':([0,25,33,],[12,12,47,]),'negation':([0,25,33,],[13,13,48,]),'factor':([0,8,16,18,19,20,23,24,25,26,33,],[14,14,14,14,14,14,43,44,14,14,14,]),'op':([11,],[26,]),'logic_op':([12,],[33,]),}
+_lr_goto_items = {'codigo':([0,29,62,],[1,51,71,]),'impresion':([0,29,62,],[2,2,2,]),'expression':([0,10,20,24,29,30,37,40,62,],[3,25,44,47,3,44,44,44,3,]),'cicloFor':([0,29,62,],[4,4,4,]),'comparison':([0,20,29,37,40,62,],[5,42,5,55,56,5,]),'logic_operation':([0,29,62,],[6,6,6,]),'SenIF':([0,29,62,],[7,7,7,]),'SenStruct':([0,29,62,],[8,8,8,]),'term':([0,10,20,22,23,24,29,30,37,40,62,],[11,11,11,45,46,11,11,11,11,11,11,]),'value':([0,20,29,30,37,40,62,],[13,13,13,52,13,13,13,]),'logic_value':([0,29,37,62,],[14,14,53,14,]),'negation':([0,29,37,62,],[15,15,54,15,]),'factor':([0,10,20,22,23,24,27,28,29,30,37,40,62,],[19,19,19,19,19,19,49,50,19,19,19,19,19,]),'op':([13,],[30,]),'logic_op':([14,],[37,]),'declaration':([61,],[63,]),'tipo':([61,],[64,]),'variable':([64,],[73,]),}
 
 _lr_goto = {}
 for _k, _v in _lr_goto_items.items():
@@ -32,32 +32,44 @@ _lr_productions = [
   ('codigo -> cicloFor','codigo',1,'p_coddigo','syntactic.py',18),
   ('codigo -> comparison','codigo',1,'p_coddigo','syntactic.py',19),
   ('codigo -> logic_operation','codigo',1,'p_coddigo','syntactic.py',20),
-  ('cicloFor -> FOR LLLAVE codigo RLLAVE','cicloFor',4,'p_for','syntactic.py',25),
-  ('comparison -> value op value','comparison',3,'p_comparison','syntactic.py',28),
-  ('value -> ID','value',1,'p_comparison','syntactic.py',29),
-  ('value -> expression','value',1,'p_comparison','syntactic.py',30),
-  ('op -> GREATER','op',1,'p_comparison','syntactic.py',31),
-  ('op -> SMALLER','op',1,'p_comparison','syntactic.py',32),
-  ('op -> GREATER_OR_EQUAL','op',1,'p_comparison','syntactic.py',33),
-  ('op -> SMALLER_OR_EQUAL','op',1,'p_comparison','syntactic.py',34),
-  ('op -> EQUAL_COMPARE','op',1,'p_comparison','syntactic.py',35),
-  ('op -> NOT_EQUAL','op',1,'p_comparison','syntactic.py',36),
-  ('logic_operation -> logic_value logic_op logic_value','logic_operation',3,'p_logic_operation','syntactic.py',39),
-  ('logic_operation -> negation','logic_operation',1,'p_logic_operation','syntactic.py',40),
-  ('logic_value -> negation','logic_value',1,'p_logic_operation','syntactic.py',42),
-  ('logic_value -> comparison','logic_value',1,'p_logic_operation','syntactic.py',43),
-  ('negation -> NOT comparison','negation',2,'p_logic_operation','syntactic.py',45),
-  ('negation -> NOT ID','negation',2,'p_logic_operation','syntactic.py',46),
-  ('logic_op -> AND','logic_op',1,'p_logic_operation','syntactic.py',48),
-  ('logic_op -> OR','logic_op',1,'p_logic_operation','syntactic.py',49),
-  ('impresion -> PRINT LPAREN expression RPAREN','impresion',4,'p_impresion','syntactic.py',64),
-  ('expression -> expression PLUS term','expression',3,'p_expression_plus','syntactic.py',69),
-  ('expression -> expression MINUS term','expression',3,'p_expression_minus','syntactic.py',73),
-  ('expression -> term','expression',1,'p_expression_term','syntactic.py',77),
-  ('term -> term TIMES factor','term',3,'p_term_times','syntactic.py',81),
-  ('term -> term DIVIDE factor','term',3,'p_term_div','syntactic.py',85),
-  ('term -> factor','term',1,'p_term_factor','syntactic.py',89),
-  ('factor -> INTEGER','factor',1,'p_factor_num','syntactic.py',93),
-  ('factor -> ID','factor',1,'p_factor_id','syntactic.py',96),
-  ('factor -> LPAREN expression RPAREN','factor',3,'p_factor_expr','syntactic.py',99),
+  ('codigo -> SenIF','codigo',1,'p_coddigo','syntactic.py',21),
+  ('codigo -> SenStruct','codigo',1,'p_coddigo','syntactic.py',22),
+  ('cicloFor -> FOR LLLAVE codigo RLLAVE','cicloFor',4,'p_for','syntactic.py',27),
+  ('comparison -> value op value','comparison',3,'p_comparison','syntactic.py',30),
+  ('value -> ID','value',1,'p_comparison','syntactic.py',31),
+  ('value -> expression','value',1,'p_comparison','syntactic.py',32),
+  ('op -> GREATER','op',1,'p_comparison','syntactic.py',33),
+  ('op -> SMALLER','op',1,'p_comparison','syntactic.py',34),
+  ('op -> GREATER_OR_EQUAL','op',1,'p_comparison','syntactic.py',35),
+  ('op -> SMALLER_OR_EQUAL','op',1,'p_comparison','syntactic.py',36),
+  ('op -> EQUAL_COMPARE','op',1,'p_comparison','syntactic.py',37),
+  ('op -> NOT_EQUAL','op',1,'p_comparison','syntactic.py',38),
+  ('logic_operation -> logic_value logic_op logic_value','logic_operation',3,'p_logic_operation','syntactic.py',41),
+  ('logic_operation -> negation','logic_operation',1,'p_logic_operation','syntactic.py',42),
+  ('logic_value -> negation','logic_value',1,'p_logic_operation','syntactic.py',44),
+  ('logic_value -> comparison','logic_value',1,'p_logic_operation','syntactic.py',45),
+  ('negation -> NOT comparison','negation',2,'p_logic_operation','syntactic.py',47),
+  ('negation -> NOT ID','negation',2,'p_logic_operation','syntactic.py',48),
+  ('logic_op -> AND','logic_op',1,'p_logic_operation','syntactic.py',50),
+  ('logic_op -> OR','logic_op',1,'p_logic_operation','syntactic.py',51),
+  ('SenIF -> IF LPAREN comparison RPAREN LLLAVE codigo RLLAVE','SenIF',7,'p_if','syntactic.py',55),
+  ('SenStruct -> TYPE ID STRUCT LLLAVE declaration RLLAVE','SenStruct',6,'p_struct','syntactic.py',58),
+  ('declaration -> tipo variable','declaration',2,'p_struct','syntactic.py',60),
+  ('tipo -> INT32','tipo',1,'p_struct','syntactic.py',62),
+  ('tipo -> INT64','tipo',1,'p_struct','syntactic.py',63),
+  ('tipo -> FLOAT32','tipo',1,'p_struct','syntactic.py',64),
+  ('tipo -> FLOAT64','tipo',1,'p_struct','syntactic.py',65),
+  ('tipo -> STRING','tipo',1,'p_struct','syntactic.py',66),
+  ('tipo -> BOOL','tipo',1,'p_struct','syntactic.py',67),
+  ('variable -> ID','variable',1,'p_struct','syntactic.py',69),
+  ('impresion -> PRINT LPAREN expression RPAREN','impresion',4,'p_impresion','syntactic.py',73),
+  ('expression -> expression PLUS term','expression',3,'p_expression_plus','syntactic.py',78),
+  ('expression -> expression MINUS term','expression',3,'p_expression_minus','syntactic.py',82),
+  ('expression -> term','expression',1,'p_expression_term','syntactic.py',86),
+  ('term -> term TIMES factor','term',3,'p_term_times','syntactic.py',90),
+  ('term -> term DIVIDE factor','term',3,'p_term_div','syntactic.py',94),
+  ('term -> factor','term',1,'p_term_factor','syntactic.py',98),
+  ('factor -> INTEGER','factor',1,'p_factor_num','syntactic.py',102),
+  ('factor -> ID','factor',1,'p_factor_id','syntactic.py',105),
+  ('factor -> LPAREN expression RPAREN','factor',3,'p_factor_expr','syntactic.py',108),
 ]
