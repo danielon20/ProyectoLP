@@ -35,8 +35,11 @@ reserved = {
     'true' : 'TRUE',
     'false' : "FALSE",
     'bool' : 'BOOL',
-    'print' : "PRINT",
-    'scan' : 'SCAN'
+    #'print' : "PRINT",
+    'scan' : 'SCAN',
+    'int'  : 'WINT',
+    'float' : 'WFLOAT',
+    'string' : 'WSTRING'
 }
 
 #list of tokens
