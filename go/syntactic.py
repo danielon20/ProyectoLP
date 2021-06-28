@@ -14,11 +14,14 @@ from lexi import tokens
 
 
 def p_coddigo(p):
-    '''codigo : impresion
+    '''codigo : impresion COLON
+              | impresion
+              | expression COLON
               | expression
               | cicloFor
               | comparison
               | logic_operation
+              | decVar COLON
               | decVar
               | funciones
               | agrupaciones
@@ -43,10 +46,15 @@ def p_decVar(p):
               | VAR ID EQUAL ID
               | VAR ID EQUAL FLOAT
               | VAR ID EQUAL expression
+              | VAR ID EQUAL logic_operation
+              | VAR ID EQUAL comparison
               | sliceC
               | VAR ID EQUAL STRING
               | ID DEQUAL STRING
-              | ID DEQUAL FLOAT'''
+              | ID DEQUAL FLOAT
+              | ID DEQUAL expression
+              | ID DEQUAL logic_operation
+              | ID DEQUAL comparison'''
 
 
 
@@ -139,6 +147,7 @@ def p_logic_operation(p):
 
        logic_value     : negation
                        | comparison
+                       | ID
 
        negation        : NOT comparison
                        | NOT ID
