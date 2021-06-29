@@ -155,12 +155,15 @@ def p_decVarOne(p):
 
 ###C
 def p_if(p):
-    'SenIF : IF LPAREN comparison RPAREN LLLAVE codigo RLLAVE'
+    '''SenIF : IF LPAREN comparison RPAREN LLLAVE codigo RLLAVE
+             | IF LPAREN TRUE RPAREN LLLAVE codigo RLLAVE
+             | IF LPAREN FALSE RPAREN LLLAVE codigo RLLAVE'''
 
 def p_struct(p):
     '''SenStruct : TYPE ID STRUCT LLLAVE declaration RLLAVE
     
        declaration : variable data_types
+                   | declaration variable data_types
        
        variable    : ID'''
 ###C
