@@ -112,7 +112,8 @@ def p_arr_content(p):
                    
              items : values
                    | operations'''
-
+    
+###Daniel Viscarra - Inicio
 def p_something(p):
     '''something : ID 
                  | data_structure
@@ -127,7 +128,7 @@ def p_scan_func(p):
 
 
 
-###D
+
 def p_for(p):
     '''cicloFor : FOR LLLAVE codigo RLLAVE
                 | FOR comparison LLLAVE codigo RLLAVE
@@ -135,9 +136,7 @@ def p_for(p):
                 | FOR decVarOne COLON comparison COLON incre LLLAVE codigo RLLAVE
        incre    : ID INCREASE
                 | ID DECREASE'''
-#Pueden existir mas formas de incremento
 
-#Aqui hay que poner las estructuras que se vayan creando
 def p_decVar(p):
     '''decVar : decVarOne
               | VAR ID EQUAL INTEGER
@@ -185,9 +184,9 @@ def p_slice_assignment(p):
                         | values
                         | operations'''
 
-####
+###Daniel Viscarra - Fin
 
-
+###Carlos Quiñonez - Inicio
 def p_funciones(p):
     '''funciones : APPEND LPAREN ID COMA values RPAREN
                  | APPEND LPAREN ID COMA ID RPAREN
@@ -200,13 +199,10 @@ def p_decVarOne(p):
                  | ID DEQUAL INTEGER'''
 
 
-###D
-
-###C
 def p_if(p):
-    '''SenIF : IF LPAREN comparison RPAREN LLLAVE codigo RLLAVE
-             | IF LPAREN TRUE RPAREN LLLAVE codigo RLLAVE
-             | IF LPAREN FALSE RPAREN LLLAVE codigo RLLAVE'''
+    '''SenIF : IF comparison LLLAVE codigo RLLAVE
+             | IF TRUE LLLAVE codigo RLLAVE
+             | IF FALSE LLLAVE codigo RLLAVE'''
 
 def p_struct(p):
     '''SenStruct : TYPE ID STRUCT LLLAVE declaration RLLAVE
@@ -226,9 +222,9 @@ def p_createStruct(p):
              | INTEGER
              | TRUE
              | FALSE'''
-###C
 
-###H
+
+
 def p_comparison(p):
     '''comparison : value op value
        value      : ID
@@ -239,7 +235,9 @@ def p_comparison(p):
                   | SMALLER_OR_EQUAL
                   | EQUAL_COMPARE
                   | NOT_EQUAL'''
-
+###Carlos Quiñonez - Fin
+    
+###Hector Villegas - Inicio
 def p_logic_operation(p):
     '''logic_operation : logic_value logic_recu
                        | negation
@@ -315,7 +313,7 @@ def p_func_declaration(p):
                 more_params : ID data_types COMA params'''
 
 
-###H
+
     
 def p_impresion(p):
     '''impresion : PRINT LPAREN content RPAREN
@@ -345,7 +343,7 @@ def p_expression(p):
                  | DIVIDE
                  | MINUS'''
     
-
+###Hector Villegas - Fin
 
 # Error rule for syntax errors
 def p_error(p):
@@ -354,11 +352,75 @@ def p_error(p):
 # Build the parser
 parser = yacc.yacc()
  
-while True:
-    try:
-        s = raw_input('calc > ')
-    except EOFError:
-        break
-    if not s: continue
-    result = parser.parse(s)
-    print(result)
+ListaDeclaraciones = ['var x = 4','a := 5', 'var jho = 4.5', 'saludo := "Hola"']
+ListaExpresiones = ['5+4','9*4/4','var4+var5','x>4','y<5','x>4 && y<5 && z>4']
+ListaEstructuras = ['var arra = [5]int {4,5,6}', 'var arra2 [4] float','type persona struct { nombre string edad int }','var sli [] string','var map_capitales[string]string']
+ListaMetodos = ['len (lista1)','copy (arr2, arr3)','delete(slic,var5)','append(listapalabras,"suiza")']
+ListaFunciones = ['func sum(x int, y int) int {return x + y;}','func mul(x int, y int) int {return x * y;}']
+ListaControl = ['for i<4 { print(var4) }','switch x{ case 1: print(1); default: print(0);}','if a>5 { print(var1) }']
+print('**Algoritmo de prueba**')
+print('******************************')
+print('Declaraciones')
+for pal in ListaDeclaraciones:
+    result = parser.parse(pal)
+    if result is None:
+        print('Linea Evaluada')
+        print(pal)
+        print("Resultado: Its OK!")
+    else:
+        print("Resultado: Error de sintaxis :(")
+
+print('******************************')
+print('Expresiones')
+for pal in ListaExpresiones:
+    result = parser.parse(pal)
+    if result is None:
+        print('Linea Evaluada')
+        print(pal)
+        print("Resultado: Its OK!")
+    else:
+        print("Resultado: Error de sintaxis :(")
+        
+print('******************************')        
+print('Estructura datos')
+for pal in ListaEstructuras:
+    result = parser.parse(pal)
+    if result is None:
+        print('Linea Evaluada')
+        print(pal)
+        print("Resultado: Its OK!")
+    else:
+        print("Resultado: Error de sintaxis :(")
+        
+print('******************************')
+print('Metodos')
+for pal in ListaMetodos:
+    result = parser.parse(pal)
+    if result is None:
+        print('Linea Evaluada')
+        print(pal)
+        print("Resultado: Its OK!")
+    else:
+        print("Resultado: Error de sintaxis :(")
+
+print('******************************')
+print('Funciones')
+for pal in ListaFunciones:
+    result = parser.parse(pal)
+    if result is None:
+        print('Linea Evaluada')
+        print(pal)
+        print("Resultado: Its OK!")
+    else:
+        print("Resultado: Error de sintaxis :(")
+
+print('******************************')
+print('Estructuras de control')
+for pal in ListaControl:
+    result = parser.parse(pal)
+    if result is None:
+        print('Linea Evaluada')
+        print(pal)
+        print("Resultado: Its OK!")
+    else:
+        print("Resultado: Error de sintaxis :(")
