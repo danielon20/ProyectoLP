@@ -43,7 +43,14 @@ def p_coddigo(p):
               | array_var COLON
               | array_var
               | array_assignment COLON
-              | array_assignment'''
+              | array_assignment
+              
+              | map_declaration COLON
+              | map_declaration
+              | map_assignment COLON
+              | map_assignment
+              
+              | func_declaration'''
 
 def p_values(p):
     '''values : STRING
@@ -69,7 +76,8 @@ def p_operations(p):
                   | logic_operation'''
 
 def p_data_structure(p):
-    '''data_structure : array_var'''
+    '''data_structure : array_var
+                      | map_var'''
 
 def p_arr_content(p): 
     '''arr_content :  LLLAVE items COMA more_items RLLAVE
@@ -80,6 +88,12 @@ def p_arr_content(p):
                    
              items : values
                    | operations'''
+
+def p_something(p):
+    '''something : ID 
+                 | data_structure
+                 | values
+                 | operations'''
 
 
 ###D
@@ -202,12 +216,37 @@ def p_array_var(p):
                  | expression'''
 
 def p_array_assignment(p):
-    '''array_assignment : array_var EQUAL something
-    
-              something : ID 
-                        | array_var
+    '''array_assignment : array_var EQUAL something'''
+
+def p_map_declaration(p):
+    '''map_declaration : VAR ID LCORCHE data_types RCORCHE data_types'''
+
+def p_map_var(p):
+    '''map_var : ID LCORCHE key RCORCHE
+           key : ID 
+               | values
+               | operations'''
+
+def p_map_assignment(p):
+    '''map_assignment : array_var EQUAL something'''
+
+def p_func_declaration(p):
+    '''func_declaration : FUNC ID LPAREN params RPAREN data_types LLLAVE codigo RETURN retorno RLLAVE
+                        | FUNC ID LPAREN params RPAREN data_types LLLAVE RETURN return_value RLLAVE
+
+                return_value : retorno COLON
+                             | retorno
+                
+                retorno : ID 
                         | values
-                        | operations'''
+                        | operations
+                        | data_structure
+                        
+                params : ID data_types 
+                       | more_params
+                       
+                more_params : ID data_types COMA params'''
+
 
 ###H
     
