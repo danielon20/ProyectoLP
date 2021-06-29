@@ -17,6 +17,9 @@ def p_coddigo(p):
     '''codigo : impresion COLON
               | impresion
 
+              | scan_func COLON
+              | scan_func
+
               | expression COLON
               | expression
 
@@ -28,6 +31,9 @@ def p_coddigo(p):
 
               | decVar COLON
               | decVar
+
+              | var_asignation
+              | var_asignation COLON
 
               | funciones
               | funciones COLON
@@ -58,7 +64,9 @@ def p_coddigo(p):
               | map_assignment COLON
               | map_assignment
               
-              | func_declaration'''
+              | func_declaration
+              
+              | main_func'''
 
 def p_values(p):
     '''values : STRING
@@ -87,6 +95,14 @@ def p_data_structure(p):
     '''data_structure : array_var
                       | map_var'''
 
+def p_var_asignation(p):
+    '''var_asignation : ID EQUAL any
+                any : values
+                      | operations
+                      | ID
+                      | data_structure
+                      | funciones'''
+
 def p_arr_content(p): 
     '''arr_content :  LLLAVE items COMA more_items RLLAVE
                 | LLLAVE items RLLAVE
@@ -102,6 +118,13 @@ def p_something(p):
                  | data_structure
                  | values
                  | operations'''
+
+def p_main_func(p):
+    '''main_func : FUNC MAIN LPAREN RPAREN LLLAVE codigo RLLAVE'''
+
+def p_scan_func(p):
+    '''scan_func : SCAN LPAREN POINTER RPAREN'''
+
 
 
 ###D
@@ -295,7 +318,12 @@ def p_func_declaration(p):
 ###H
     
 def p_impresion(p):
-    'impresion : PRINT LPAREN expression RPAREN'
+    '''impresion : PRINT LPAREN content RPAREN
+         content : values
+                 | operations
+                 | funciones
+                 | data_structure
+                 | ID'''
 
 
 
