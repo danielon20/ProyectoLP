@@ -45,6 +45,13 @@ def p_coddigo(p):
               | array_var
               | array_assignment COLON
               | array_assignment
+
+              | slice_declaration COLON
+              | slice_declaration
+              | slice_var COLON
+              | slice_var
+              | slice_assignment COLON
+              | slice_assignment
               
               | map_declaration COLON
               | map_declaration
@@ -116,7 +123,6 @@ def p_decVar(p):
               | VAR ID EQUAL expression
               | VAR ID EQUAL logic_operation
               | VAR ID EQUAL comparison
-              | sliceC
               | VAR ID EQUAL STRING
               | ID DEQUAL STRING
               | ID DEQUAL FLOAT
@@ -125,19 +131,38 @@ def p_decVar(p):
               | ID DEQUAL comparison'''
 
 
+###Slices
+def p_slice_declaration(p):
+    '''slice_declaration : VAR ID LCORCHE RCORCHE data_types
+                         | VAR ID EQUAL LCORCHE RCORCHE data_types arr_content
+                         | VAR ID EQUAL funM
+                         | ID DEQUAL funM
+                         | ID DEQUAL LCORCHE RCORCHE data_types arr_content
 
 
-def p_sliceC(p):
-    '''sliceC : VAR ID LCORCHE RCORCHE data_types
-              | ID DEQUAL funM
-              | ID DEQUAL LCORCHE RCORCHE data_types arr_content
-       funM : MAKE LPAREN LCORCHE RCORCHE data_types COMA cap RPAREN
-            | MAKE LPAREN LCORCHE RCORCHE data_types COMA cap COMA cap RPAREN
-            
-       cap : INTEGER 
-           | ID
-           | expression'''
+                    funM : MAKE LPAREN LCORCHE RCORCHE data_types COMA cap RPAREN
+                         | MAKE LPAREN LCORCHE RCORCHE data_types COMA cap COMA cap RPAREN
+                         
+                     cap : INTEGER
+                         | ID
+                         | expression'''
 
+def p_slice_var(p):
+    '''slice_var : ID LCORCHE index_s RCORCHE
+         
+         index_s : ID
+                 | INTEGER
+                 | expression'''
+
+def p_slice_assignment(p):
+    '''slice_assignment : slice_var EQUAL something_s
+    
+              something_s : ID 
+                        | array_var
+                        | values
+                        | operations'''
+
+####
 
 
 def p_funciones(p):
@@ -193,8 +218,12 @@ def p_comparison(p):
                   | NOT_EQUAL'''
 
 def p_logic_operation(p):
-    '''logic_operation : logic_value logic_op logic_value
+    '''logic_operation : logic_value logic_recu
                        | negation
+
+       logic_recu      : logic_op logic_value
+                       | logic_op logic_value logic_recu
+        
 
        logic_value     : negation
                        | comparison
@@ -270,38 +299,23 @@ def p_impresion(p):
 
 
 
-def p_expression_plus(p):
-    'expression : expression PLUS term'
-    
- 
-def p_expression_minus(p):
-    'expression : expression MINUS term'
-    
- 
-def p_expression_term(p):
-    'expression : term'
-    
- 
-def p_term_times(p):
-    'term : term TIMES factor'
-    
- 
-def p_term_div(p):
-    'term : term DIVIDE factor'
-    
- 
-def p_term_factor(p):
-    'term : factor'
-    
- 
-def p_factor_num(p):
-    'factor : INTEGER'
+def p_expression(p):
+    '''expression : something_ex
+                  | something_ex adicionaEx
 
-def p_factor_id(p):
-    'factor : ID'
-    
-def p_factor_expr(p):
-    'factor : LPAREN expression RPAREN'
+       adicionaEx : op something_ex
+                  | op something_ex adicionaEx
+
+    something_ex : ID
+                 | INTEGER
+                 | FLOAT
+                 | data_structure
+                 | funciones
+
+              op : PLUS
+                 | TIMES
+                 | DIVIDE
+                 | MINUS'''
     
 
 
