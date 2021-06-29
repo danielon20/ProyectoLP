@@ -35,6 +35,7 @@ def p_coddigo(p):
               | SenIF
 
               | SenStruct
+              | cStruct
 
               | switch_statement
 
@@ -166,6 +167,17 @@ def p_struct(p):
                    | declaration variable data_types
        
        variable    : ID'''
+
+def p_createStruct(p):
+    '''cStruct : ID DEQUAL ID LLLAVE asignaciones RLLAVE
+    
+       asignaciones : ID POINTS valor
+                    | ID POINTS valor COMA asignaciones
+       
+       valor : ID
+             | INTEGER
+             | TRUE
+             | FALSE'''
 ###C
 
 ###H
