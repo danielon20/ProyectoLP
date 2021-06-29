@@ -8,10 +8,12 @@ reserved = {
     'if' : 'IF',
     'else' : 'ELSE',
     'case' : 'CASE',
+    'default' : 'DEFAULT',
     'switch' : 'SWITCH',
     'for' : 'FOR',
     'package' : 'PACKAGE',
     'main' : 'MAIN',
+    'delete' : 'DELETE',
     'map' : 'MAP',
     'print' : 'PRINT',
     'func' : 'FUNC',
@@ -82,7 +84,8 @@ tokens = [
     'MULTI_COMMENT',
     'POINTER',
     'COMA',
-    'COLON'
+    'COLON',
+    'POINTS'
 ] +  list(reserved.values())
 
 def goLexer():  
@@ -115,6 +118,7 @@ def goLexer():
     t_RLLAVE = r'\}'
     t_COMA = r','
     t_COLON = r';'
+    t_POINTS = r':'
 
 # FIN
 # DANIEL VISCARRA

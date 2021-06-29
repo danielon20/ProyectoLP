@@ -16,17 +16,70 @@ from lexi import tokens
 def p_coddigo(p):
     '''codigo : impresion COLON
               | impresion
+
               | expression COLON
               | expression
+
               | cicloFor
+
               | comparison
+
               | logic_operation
+
               | decVar COLON
               | decVar
+
               | funciones
-              | agrupaciones
+              | funciones COLON
+
               | SenIF
-              | SenStruct'''
+
+              | SenStruct
+
+              | switch_statement
+
+              | array_declaration COLON
+              | array_declaration
+              | array_var COLON
+              | array_var
+              | array_assignment COLON
+              | array_assignment'''
+
+def p_values(p):
+    '''values : STRING
+              | INTEGER
+              | FLOAT
+              | TRUE
+              | FALSE'''
+              
+def p_data_types(p):
+    '''data_types : INT32
+            | INT64
+            | FLOAT32
+            | FLOAT64
+            | BYTE
+            | WINT
+            | WFLOAT
+            | WSTRING
+            | BOOL'''
+
+def p_operations(p):
+    '''operations : expression 
+                  | comparison 
+                  | logic_operation'''
+
+def p_data_structure(p):
+    '''data_structure : array_var'''
+
+def p_arr_content(p): 
+    '''arr_content :  LLLAVE items COMA more_items RLLAVE
+                | LLLAVE items RLLAVE
+                
+        more_items : items COMA more_items
+                   | items
+                   
+             items : values
+                   | operations'''
 
 
 ###D
@@ -60,48 +113,24 @@ def p_decVar(p):
 
 
 def p_sliceC(p):
-    '''sliceC : VAR ID LCORCHE RCORCHE type
+    '''sliceC : VAR ID LCORCHE RCORCHE data_types
               | ID DEQUAL funM
-              | ID DEQUAL LCORCHE RCORCHE type agrupaciones
-       funM : MAKE LPAREN LCORCHE RCORCHE type COMA INTEGER RPAREN
-            | MAKE LPAREN LCORCHE RCORCHE type COMA INTEGER COMA INTEGER RPAREN
-       type : INT32
-            | INT64
-            | FLOAT32
-            | FLOAT64
-            | BYTE
-            | WINT
-            | WFLOAT
-            | WSTRING'''
-#Mefalta int y string
-#Tambien deberia estar solo el int si nada a lado, de igual manera el float
-#Tambien debe considerarse valores booleanos (TRUE Y FALSE)
-
-#Esto puede ser usado para quien le toque el array porque es un poco similar al slice
-def p_agrupaciones(p):
-    '''agrupaciones : LLLAVE INTEGER RLLAVE
-                    | LLLAVE INTEGER enteros RLLAVE
-                    | LLLAVE FLOAT RLLAVE
-                    | LLLAVE FLOAT flotantes RLLAVE
-                    | LLLAVE STRING RLLAVE
-                    | LLLAVE STRING palabras RLLAVE
-       enteros   : COMA INTEGER
-                 | COMA INTEGER enteros
-       flotantes : COMA FLOAT
-                 | COMA FLOAT flotantes
-       palabras  : COMA STRING
-                 | COMA STRING palabras'''
-        
+              | ID DEQUAL LCORCHE RCORCHE data_types arr_content
+       funM : MAKE LPAREN LCORCHE RCORCHE data_types COMA cap RPAREN
+            | MAKE LPAREN LCORCHE RCORCHE data_types COMA cap COMA cap RPAREN
+            
+       cap : INTEGER 
+           | ID
+           | expression'''
 
 
 
 def p_funciones(p):
-    '''funciones : APPEND LPAREN ID COMA INTEGER RPAREN
-                 | APPEND LPAREN ID COMA FLOAT RPAREN
-                 | APPEND LPAREN ID COMA STRING RPAREN
+    '''funciones : APPEND LPAREN ID COMA values RPAREN
                  | APPEND LPAREN ID COMA ID RPAREN
                  | LEN LPAREN ID RPAREN
-                 | COPY LPAREN ID COMA ID RPAREN'''
+                 | COPY LPAREN ID COMA ID RPAREN
+                 | DELETE LPAREN ID COMA ID RPAREN'''
 
 def p_decVarOne(p):
     '''decVarOne : ID DEQUAL ID
@@ -117,14 +146,7 @@ def p_if(p):
 def p_struct(p):
     '''SenStruct : TYPE ID STRUCT LLLAVE declaration RLLAVE
     
-       declaration : tipo variable
-        
-       tipo        : INT32
-                   | INT64
-                   | FLOAT32
-                   | FLOAT64
-                   | WSTRING
-                   | BOOL
+       declaration : variable data_types
        
        variable    : ID'''
 ###C
@@ -154,6 +176,39 @@ def p_logic_operation(p):
                        
        logic_op        : AND
                        | OR'''
+
+def p_switch(p):
+    '''switch_statement : SWITCH ID LLLAVE cases RLLAVE
+
+                  cases : CASE values POINTS codigo 
+                        | CASE values POINTS codigo more
+
+                  more : cases 
+                       | DEFAULT POINTS codigo'''
+
+def p_array_declaration(p):
+    '''array_declaration : VAR ID LCORCHE capacity RCORCHE data_types
+                         | VAR ID EQUAL LCORCHE capacity RCORCHE data_types arr_content
+
+       capacity : INTEGER 
+                | ID
+                | expression'''
+
+def p_array_var(p):
+    '''array_var : ID LCORCHE index RCORCHE
+         
+           index : ID
+                 | INTEGER
+                 | expression'''
+
+def p_array_assignment(p):
+    '''array_assignment : array_var EQUAL something
+    
+              something : ID 
+                        | array_var
+                        | values
+                        | operations'''
+
 ###H
     
 def p_impresion(p):
