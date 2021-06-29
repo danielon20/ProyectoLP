@@ -39,6 +39,8 @@ def p_coddigo(p):
               | funciones COLON
 
               | SenIF
+              | SenElseIF
+              | SenElse
 
               | SenStruct
               | cStruct
@@ -203,6 +205,14 @@ def p_if(p):
     '''SenIF : IF comparison LLLAVE codigo RLLAVE
              | IF TRUE LLLAVE codigo RLLAVE
              | IF FALSE LLLAVE codigo RLLAVE'''
+
+def p_elseif(p):
+    '''SenElseIF : ELSE IF comparison LLLAVE codigo RLLAVE
+             | ELSE IF TRUE LLLAVE codigo RLLAVE
+             | ELSE IF FALSE LLLAVE codigo RLLAVE'''
+
+def p_else(p):
+    '''SenElse : ELSE LLLAVE codigo RLLAVE'''
 
 def p_struct(p):
     '''SenStruct : TYPE ID STRUCT LLLAVE declaration RLLAVE
