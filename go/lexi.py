@@ -126,6 +126,7 @@ def goLexer():
 # INICIO
 
     t_ignore = ' \t'
+    t_ignore_SALTO = r'\n'
     t_ignore_COMMENT = r'//.*'
     t_ignore_MULTI_COMMENT = r'/\*\n*.*\n*\*/'
     
