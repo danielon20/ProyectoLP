@@ -75,7 +75,7 @@ def p_rules(p):
               | map_assignment
               
               | func_declaration
-              
+
               | main_func'''
 
 def p_values(p):
@@ -111,7 +111,8 @@ def p_var_asignation(p):
                       | operations
                       | ID
                       | data_structure
-                      | funciones'''
+                      | funciones
+                      | call_func'''
 
 def p_arr_content(p): 
     '''arr_content :  LLLAVE items COMA more_items RLLAVE
@@ -137,7 +138,12 @@ def p_scan_func(p):
     '''scan_func : SCAN LPAREN POINTER RPAREN'''
 
 
-
+def p_call_func(p):
+    '''call_func : ID LPAREN list_params RPAREN
+                 | ID LPAREN RPAREN
+       list_params : ID
+                   | ID COMA more_p
+            more_p : list_params'''
 
 def p_for(p):
     '''cicloFor : FOR LLLAVE codigo RLLAVE
@@ -148,19 +154,41 @@ def p_for(p):
                 | ID DECREASE'''
 
 def p_decVar(p):
-    '''decVar : decVarOne
-              | VAR ID EQUAL INTEGER
-              | VAR ID EQUAL ID
-              | VAR ID EQUAL FLOAT
-              | VAR ID EQUAL expression
-              | VAR ID EQUAL logic_operation
-              | VAR ID EQUAL comparison
-              | VAR ID EQUAL STRING
-              | ID DEQUAL STRING
-              | ID DEQUAL FLOAT
-              | ID DEQUAL expression
-              | ID DEQUAL logic_operation
-              | ID DEQUAL comparison'''
+    '''decVar : static
+              | dynamic
+              
+       static : single
+              | multiple
+              
+       multiple : list_var data_types
+       list_var : VAR ID COMA more
+       more : ID
+            | ID COMA more
+            
+       single : VAR ID data_types
+              | VAR ID data_types EQUAL funciones
+              | VAR ID data_types EQUAL ID
+              | VAR ID data_types EQUAL data_structure
+              | VAR ID data_type_and_value
+              
+       data_type_and_value : WSTRING EQUAL STRING
+                           | WINT EQUAL int_value
+                           | INT32 EQUAL int_value
+                           | INT64 EQUAL int_value
+                           | WFLOAT EQUAL float_value
+                           | FLOAT32 EQUAL float_value
+                           | FLOAT64 EQUAL float_value
+                           | BOOL EQUAL bool_value
+
+       int_value : INTEGER
+                 | expression
+       bool_value : TRUE
+                  | FALSE
+                  | comparison
+                  | logic_operation
+       float_value : FLOAT
+       
+       dynamic : ID DEQUAL values'''
 
 
 ###Slices
@@ -202,12 +230,11 @@ def p_funciones(p):
                  | APPEND LPAREN ID COMA ID RPAREN
                  | LEN LPAREN ID RPAREN
                  | COPY LPAREN ID COMA ID RPAREN
-                 | DELETE LPAREN ID COMA ID RPAREN'''
-
+                 | DELETE LPAREN ID COMA ID RPAREN
+                 | call_func'''
 def p_decVarOne(p):
     '''decVarOne : ID DEQUAL ID
                  | ID DEQUAL INTEGER'''
-
 
 def p_if(p):
     '''SenIF : IF comparison LLLAVE codigo RLLAVE
@@ -311,7 +338,7 @@ def p_map_var(p):
                | operations'''
 
 def p_map_assignment(p):
-    '''map_assignment : array_var EQUAL something'''
+    '''map_assignment : map_var EQUAL something'''
 
 def p_func_declaration(p):
     '''func_declaration : FUNC ID LPAREN params RPAREN data_types LLLAVE codigo RETURN retorno RLLAVE
