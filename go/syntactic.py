@@ -12,9 +12,17 @@ lexer = lexi.goLexer()
 
 from lexi import tokens
 
+flag = True
 
 def p_coddigo(p):
-    '''codigo : impresion COLON
+    '''codigo : rule 
+              | more_rules'''
+
+def p_more_rules(p):
+    '''more_rules : rule codigo'''
+
+def p_rules(p):
+    '''rule : impresion COLON
               | impresion
 
               | scan_func COLON
@@ -358,6 +366,7 @@ def p_expression(p):
 # Error rule for syntax errors
 def p_error(p):
     print("Syntax error in input!")
+    globals()['flag'] = False
     
 # Build the parser
 parser = yacc.yacc()

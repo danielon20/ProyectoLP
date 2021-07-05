@@ -36,12 +36,15 @@ class form(QtWidgets.QWidget):
     def syntacticalAnalysis(self):
         code = self.ui.textEdit.toPlainText()
         parser = syntactic.parser
+
+        syntactic.flag = True
         
         result = parser.parse(code)
-
-        print(result)
-
-        #self.ui.textEdit_3.setText(result)
+        
+        if syntactic.flag == False:
+            self.ui.textEdit_3.setText('Syntax error in input!')
+        else:
+            self.ui.textEdit_3.setText(str(result))
 
 
 app=QtWidgets.QApplication(sys.argv)
