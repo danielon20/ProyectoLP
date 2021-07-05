@@ -44,6 +44,7 @@ class Form(QtWidgets.QWidget):
         code = self.ui.textEdit.toPlainText()
         parser = syntactic.parser
 
+
         syntactic.flag = True
 
         result = parser.parse(code)
@@ -51,7 +52,7 @@ class Form(QtWidgets.QWidget):
         if not syntactic.flag:
             self.ui.textEdit_3.setText('Syntax error in input!')
         else:
-            self.ui.textEdit_3.setText(str(result))
+            self.ui.textEdit_3.setText(str(result) + '\n' + str(parser.productions))
 
 if __name__ == "__main__":
     app = QtWidgets.QApplication(sys.argv)

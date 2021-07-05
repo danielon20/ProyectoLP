@@ -40,6 +40,9 @@ def p_rules(p):
               | decVar COLON
               | decVar
 
+              | decConst COLON
+              | decConst
+
               | var_asignation
               | var_asignation COLON
 
@@ -151,6 +154,29 @@ def p_for(p):
                 | FOR decVarOne COLON comparison COLON incre LLLAVE codigo RLLAVE
        incre    : ID INCREASE
                 | ID DECREASE'''
+def p_data_type_and_value(p):
+    '''data_type_and_value : WSTRING EQUAL STRING
+                           | WINT EQUAL int_value
+                           | INT32 EQUAL int_value
+                           | INT64 EQUAL int_value
+                           | WFLOAT EQUAL float_value
+                           | FLOAT32 EQUAL float_value
+                           | FLOAT64 EQUAL float_value
+                           | BOOL EQUAL bool_value
+
+       int_value : INTEGER
+                 | expression
+       bool_value : TRUE
+                  | FALSE
+                  | comparison
+                  | logic_operation
+       float_value : FLOAT
+                   | expression'''
+
+def p_decConst(p):
+    '''decConst : CONST ID data_type_and_value
+                | CONST ID EQUAL ID
+                | CONST ID EQUAL data_structure'''
 
 def p_decVar(p):
     '''decVar : static
@@ -169,24 +195,7 @@ def p_decVar(p):
               | VAR ID data_types EQUAL ID
               | VAR ID data_types EQUAL data_structure
               | VAR ID data_type_and_value
-              
-       data_type_and_value : WSTRING EQUAL STRING
-                           | WINT EQUAL int_value
-                           | INT32 EQUAL int_value
-                           | INT64 EQUAL int_value
-                           | WFLOAT EQUAL float_value
-                           | FLOAT32 EQUAL float_value
-                           | FLOAT64 EQUAL float_value
-                           | BOOL EQUAL bool_value
 
-       int_value : INTEGER
-                 | expression
-       bool_value : TRUE
-                  | FALSE
-                  | comparison
-                  | logic_operation
-       float_value : FLOAT
-       
        dynamic : ID DEQUAL algo
        algo : values
             | operations
@@ -390,7 +399,8 @@ def p_expression(p):
               op : PLUS
                  | TIMES
                  | DIVIDE
-                 | MINUS'''
+                 | MINUS
+                 | MOD'''
     
 ###Hector Villegas - Fin
 
