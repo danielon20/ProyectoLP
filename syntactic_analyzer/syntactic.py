@@ -15,7 +15,7 @@ from lexical_analyzer.lexi import tokens
 flag = True
 
 def p_coddigo(p):
-    '''codigo : rule 
+    '''codigo : rule
               | more_rules'''
 
 def p_more_rules(p):
@@ -111,8 +111,7 @@ def p_var_asignation(p):
                       | operations
                       | ID
                       | data_structure
-                      | funciones
-                      | call_func'''
+                      | funciones'''
 
 def p_arr_content(p): 
     '''arr_content :  LLLAVE items COMA more_items RLLAVE
@@ -188,7 +187,12 @@ def p_decVar(p):
                   | logic_operation
        float_value : FLOAT
        
-       dynamic : ID DEQUAL values'''
+       dynamic : ID DEQUAL algo
+       algo : values
+            | operations
+            | ID
+            | data_structure
+            | funciones'''
 
 
 ###Slices

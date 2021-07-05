@@ -1,5 +1,5 @@
 import sys
-from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5 import QtWidgets
 from view.gui import Ui_Form
 
 import lexical_analyzer.lexi as lexi
@@ -15,6 +15,14 @@ class Form(QtWidgets.QWidget):
 
         self.ui.pushButton_3.clicked.connect(self.lexicalAnalysis)
         self.ui.pushButton_4.clicked.connect(self.syntacticalAnalysis)
+
+        self.loadTestAlgorithm()
+
+    def loadTestAlgorithm(self):
+        file = open('test algorithm.txt','r')
+        lines = file.readlines()
+        content = "".join(lines)
+        self.ui.textEdit.setText(content)
 
     def lexicalAnalysis(self):
         code = self.ui.textEdit.toPlainText()
@@ -45,8 +53,8 @@ class Form(QtWidgets.QWidget):
         else:
             self.ui.textEdit_3.setText(str(result))
 
-
-app = QtWidgets.QApplication(sys.argv)
-mainWindow = Form()
-mainWindow.show()
-sys.exit(app.exec_())
+if __name__ == "__main__":
+    app = QtWidgets.QApplication(sys.argv)
+    mainWindow = Form()
+    mainWindow.show()
+    sys.exit(app.exec_())
