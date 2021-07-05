@@ -6,11 +6,11 @@ if sys.version_info[0] >= 3:
     
 import ply.yacc as yacc
 
-import lexi
+import lexical_analyzer.lexi as lexi
 
 lexer = lexi.goLexer()
 
-from lexi import tokens
+from lexical_analyzer.lexi import tokens
 
 flag = True
 

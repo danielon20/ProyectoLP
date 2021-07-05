@@ -1,16 +1,16 @@
 import sys
 from PyQt5 import QtCore, QtGui, QtWidgets
-from gui import Ui_Form
+from view.gui import Ui_Form
 
-import lexi 
-import syntactic 
+import lexical_analyzer.lexi as lexi
+import syntactic_analyzer.syntactic as syntactic
 
 
-class form(QtWidgets.QWidget):
+class Form(QtWidgets.QWidget):
 
-    def __init__(self,parent=None):
+    def __init__(self, parent=None):
         QtWidgets.QWidget.__init__(self)
-        self.ui=Ui_Form()
+        self.ui = Ui_Form()
         self.ui.setupUi(self)
 
         self.ui.pushButton_3.clicked.connect(self.lexicalAnalysis)
@@ -26,10 +26,9 @@ class form(QtWidgets.QWidget):
 
         while True:
             tok = lexer.token()
-            if not tok: 
-                break      # No more input
+            if not tok:
+                break  # No more input
             tokens += str(tok) + '\n'
-
 
         self.ui.textEdit_2.setText(tokens)
 
@@ -38,16 +37,16 @@ class form(QtWidgets.QWidget):
         parser = syntactic.parser
 
         syntactic.flag = True
-        
+
         result = parser.parse(code)
-        
-        if syntactic.flag == False:
+
+        if not syntactic.flag:
             self.ui.textEdit_3.setText('Syntax error in input!')
         else:
             self.ui.textEdit_3.setText(str(result))
 
 
-app=QtWidgets.QApplication(sys.argv)
-mainWindow=form()
+app = QtWidgets.QApplication(sys.argv)
+mainWindow = Form()
 mainWindow.show()
 sys.exit(app.exec_())
