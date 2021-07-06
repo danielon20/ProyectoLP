@@ -33,10 +33,10 @@ class Form(QtWidgets.QWidget):
         tokens = ''
 
         while True:
-            tok = lexer.token()
-            if not tok:
+            token = lexer.token()
+            if not token:
                 break  # No more input
-            tokens += str(tok) + '\n'
+            tokens += str(token) + '\n'
 
         self.ui.textEdit_2.setText(tokens)
 
