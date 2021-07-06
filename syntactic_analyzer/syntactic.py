@@ -94,9 +94,9 @@ def p_data_types(p):
             | FLOAT32
             | FLOAT64
             | BYTE
-            | WINT
             | WFLOAT
             | WSTRING
+            | WINT
             | BOOL'''
 
 def p_operations(p):
