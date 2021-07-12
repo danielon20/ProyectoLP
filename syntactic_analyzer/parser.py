@@ -6,11 +6,11 @@ if sys.version_info[0] >= 3:
     
 import ply.yacc as yacc
 
-import lexical_analyzer.lexi as lexi
+import lexical_analyzer.lexer as lexi
 
 lexer = lexi.goLexer()
 
-from lexical_analyzer.lexi import tokens
+from lexical_analyzer.lexer import tokens
 
 flag = True
 
@@ -106,7 +106,8 @@ def p_operations(p):
 
 def p_data_structure(p):
     '''data_structure : array_var
-                      | map_var'''
+                      | map_var
+                      | slice_var'''
 
 def p_var_asignation(p):
     '''var_asignation : ID EQUAL any
@@ -131,7 +132,8 @@ def p_something(p):
     '''something : ID 
                  | data_structure
                  | values
-                 | operations'''
+                 | operations
+                 | funciones'''
 
 def p_main_func(p):
     '''main_func : FUNC MAIN LPAREN RPAREN LLLAVE codigo RLLAVE'''
@@ -154,7 +156,10 @@ def p_for(p):
                 | FOR decVarOne COLON comparison COLON incre LLLAVE codigo RLLAVE
        incre    : ID INCREASE
                 | ID DECREASE'''
-def p_data_type_and_value(p):
+
+#Regla semántica: Valida que el valor inicial de una variable o constante
+#sea compatible con el tipo de dato especificado en la declaración.
+def p_data_type_and_value(p): 
     '''data_type_and_value : WSTRING EQUAL STRING
                            | WINT EQUAL int_value
                            | INT32 EQUAL int_value
@@ -203,7 +208,6 @@ def p_decVar(p):
             | data_structure
             | funciones'''
 
-
 ###Slices
 def p_slice_declaration(p):
     '''slice_declaration : VAR ID LCORCHE RCORCHE data_types
@@ -234,10 +238,12 @@ def p_slice_assignment(p):
                         | array_var
                         | values
                         | operations'''
-
 ###Daniel Viscarra - Fin
 
 ###Carlos Quiñonez - Inicio
+
+#Regla semántica: Define la invocación de funciones que operan sobre estructuras de datos
+#y de funciones definidas por el programador.
 def p_funciones(p):
     '''funciones : APPEND LPAREN ID COMA values RPAREN
                  | APPEND LPAREN ID COMA ID RPAREN
@@ -245,6 +251,7 @@ def p_funciones(p):
                  | COPY LPAREN ID COMA ID RPAREN
                  | DELETE LPAREN ID COMA ID RPAREN
                  | call_func'''
+
 def p_decVarOne(p):
     '''decVarOne : ID DEQUAL ID
                  | ID DEQUAL INTEGER'''
@@ -275,14 +282,12 @@ def p_createStruct(p):
     
        asignaciones : ID POINTS valor
                     | ID POINTS valor COMA asignaciones
-       
        valor : ID
              | INTEGER
              | TRUE
              | FALSE'''
 
-
-
+#Regla semántica: Define las comparaciones, se admiten variables o expresiones.
 def p_comparison(p):
     '''comparison : value op value
        value      : ID
@@ -294,8 +299,11 @@ def p_comparison(p):
                   | EQUAL_COMPARE
                   | NOT_EQUAL'''
 ###Carlos Quiñonez - Fin
-    
-###Hector Villegas - Inicio
+
+###Héctor Villegas - Inicio
+
+#Regla semántica: Define las operaciones lógicas, 
+#estas se realizan entre variables y comparaciones.
 def p_logic_operation(p):
     '''logic_operation : logic_value logic_recu
                        | negation
@@ -355,8 +363,11 @@ def p_map_assignment(p):
 
 def p_func_declaration(p):
     '''func_declaration : FUNC ID LPAREN params RPAREN data_types LLLAVE codigo RETURN retorno RLLAVE
-                        | FUNC ID LPAREN params RPAREN data_types LLLAVE RETURN return_value RLLAVE
+                        | FUNC ID LPAREN params RPAREN data_types LLLAVE RETURN body RLLAVE
 
+                body : codigo return_value
+                     | return_value
+                
                 return_value : retorno COLON
                              | retorno
                 
@@ -369,10 +380,7 @@ def p_func_declaration(p):
                        | more_params
                        
                 more_params : ID data_types COMA params'''
-
-
-
-    
+   
 def p_impresion(p):
     '''impresion : PRINT LPAREN content RPAREN
          content : values
@@ -381,8 +389,8 @@ def p_impresion(p):
                  | data_structure
                  | ID'''
 
-
-
+#Regla de operaciones numéricas, sólo se admiten valores enteros y flotantes,
+#además de funciones y variables.
 def p_expression(p):
     '''expression : something_ex
                   | something_ex adicionaEx

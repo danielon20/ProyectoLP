@@ -2,8 +2,8 @@ import sys
 from PyQt5 import QtWidgets
 from view.gui import Ui_Form
 
-import lexical_analyzer.lexi as lexi
-import syntactic_analyzer.syntactic as syntactic
+import lexical_analyzer.lexer as lexi
+import syntactic_analyzer.parser as syntactic
 
 
 class Form(QtWidgets.QWidget):
@@ -52,7 +52,7 @@ class Form(QtWidgets.QWidget):
         if not syntactic.flag:
             self.ui.textEdit_3.setText('Syntax error in input!')
         else:
-            self.ui.textEdit_3.setText(str(result) + '\n' + str(parser.productions))
+            self.ui.textEdit_3.setText(str(result) + '\n\n' + str(parser.productions))
 
 if __name__ == "__main__":
     app = QtWidgets.QApplication(sys.argv)
