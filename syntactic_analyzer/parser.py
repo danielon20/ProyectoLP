@@ -178,6 +178,19 @@ def p_data_type_and_value(p):
        float_value : FLOAT
                    | expression'''
 
+
+#Error de tipo de dato    
+def p_data_type_and_value_error(p):
+    '''data_type_and_value : WSTRING EQUAL error
+                           | WINT EQUAL error
+                           | INT32 EQUAL error
+                           | INT64 EQUAL error
+                           | WFLOAT EQUAL error
+                           | FLOAT32 EQUAL error
+                           | FLOAT64 EQUAL error
+                           | BOOL EQUAL error'''
+    print("Error en el tipo de dato inicializado")
+
 def p_decConst(p):
     '''decConst : CONST ID data_type_and_value
                 | CONST ID EQUAL ID
@@ -388,6 +401,11 @@ def p_impresion(p):
                  | funciones
                  | data_structure
                  | ID'''
+
+#Error de print
+def p_impresion_error(p):
+    'impresion : PRINT LPAREN error RPAREN'
+    print("Syntax error in print statement. Bad expression")
 
 #Regla de operaciones numéricas, sólo se admiten valores enteros y flotantes,
 #además de funciones y variables.
