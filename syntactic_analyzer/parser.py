@@ -432,7 +432,7 @@ def p_expression(p):
 
 # Error rule for syntax errors
 def p_error(p):
-    print("Syntax error in input!")
+    print("Error: syntax error when parsing '{}'".format(p))
     globals()['flag'] = False
     
 # Build the parser
