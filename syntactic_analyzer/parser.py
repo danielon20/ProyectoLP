@@ -189,7 +189,7 @@ def p_data_type_and_value_error(p):
                            | FLOAT32 EQUAL error
                            | FLOAT64 EQUAL error
                            | BOOL EQUAL error'''
-    print("Error en el tipo de dato inicializado")
+    print("Error en el tipo de dato inicializado: ", p[3].value, " no pertenece a los datos de tipo", p[1] )
 
 def p_decConst(p):
     '''decConst : CONST ID data_type_and_value
