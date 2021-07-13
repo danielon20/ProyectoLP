@@ -13,6 +13,16 @@ lexer = lexi.goLexer()
 from lexical_analyzer.lexer import tokens
 
 flag = True
+error_message = ""
+
+def p_program(p):
+    '''program : funcs main_func
+               | main_func funcs
+               | funcs main_func funcs
+
+      funcs : func_declaration
+           | func_declaration funcs
+           | '''
 
 def p_coddigo(p):
     '''codigo : rule
@@ -160,7 +170,7 @@ def p_for(p):
 #Regla semántica: Valida que el valor inicial de una variable o constante
 #sea compatible con el tipo de dato especificado en la declaración.
 def p_data_type_and_value(p): 
-    '''data_type_and_value : WSTRING EQUAL STRING
+    '''data_type_and_value : WSTRING EQUAL str_value
                            | WINT EQUAL int_value
                            | INT32 EQUAL int_value
                            | INT64 EQUAL int_value
@@ -169,6 +179,8 @@ def p_data_type_and_value(p):
                            | FLOAT64 EQUAL float_value
                            | BOOL EQUAL bool_value
 
+       str_value : STRING
+                 | ID
        int_value : INTEGER
                  | expression
        bool_value : TRUE
@@ -191,6 +203,9 @@ def p_data_type_and_value_error(p):
                            | BOOL EQUAL error'''
     print("Error en el tipo de dato inicializado: ", p[3].value, " no pertenece a los datos de tipo", p[1] )
 
+    globals()['flag'] = False
+    globals()['error_message'] = "Cannot use " + str(p[3].value) + " as type " + str(p[1]) + ' in assignment'
+
 def p_decConst(p):
     '''decConst : CONST ID data_type_and_value
                 | CONST ID EQUAL ID
@@ -210,7 +225,6 @@ def p_decVar(p):
             
        single : VAR ID data_types
               | VAR ID data_types EQUAL funciones
-              | VAR ID data_types EQUAL ID
               | VAR ID data_types EQUAL data_structure
               | VAR ID data_type_and_value
 
@@ -407,6 +421,11 @@ def p_impresion_error(p):
     'impresion : PRINT LPAREN error RPAREN'
     print("Syntax error in print statement. Bad expression")
 
+    globals()['flag'] = False
+    globals()['error_message'] = "Syntax error in print statement. Bad expression"
+
+
+
 #Regla de operaciones numéricas, sólo se admiten valores enteros y flotantes,
 #además de funciones y variables.
 def p_expression(p):
@@ -433,7 +452,7 @@ def p_expression(p):
 # Error rule for syntax errors
 def p_error(p):
     print("Error: syntax error when parsing '{}'".format(p))
-    globals()['flag'] = False
+    #globals()['flag'] = False
     
 # Build the parser
 parser = yacc.yacc()

@@ -46,11 +46,12 @@ class Form(QtWidgets.QWidget):
 
 
         syntactic.flag = True
+        syntactic.error_message = ''
 
         result = parser.parse(code)
 
         if not syntactic.flag:
-            self.ui.textEdit_3.setText('Syntax error in input!')
+            self.ui.textEdit_3.setText(syntactic.error_message)
         else:
             self.ui.textEdit_3.setText(str(result) + '\n\n' + str(parser.productions))
 
