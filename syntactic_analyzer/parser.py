@@ -456,7 +456,7 @@ def p_error(p):
     globals()['flag'] = False
 
     if globals()['aux']:
-        globals()['error_message'] += 'Error: syntax error when parsing ' + str(p) + '\n'
+        globals()['error_message'] += 'Error: syntax error when parsing ' + str(p.value) + " at line " + str(p.lineno) + " and column " + str(p.lexpos) + '\n'
         globals()['aux'] = False
 
 
