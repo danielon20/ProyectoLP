@@ -13,6 +13,7 @@ lexer = lexi.goLexer()
 from lexical_analyzer.lexer import tokens
 
 flag = True
+aux = True
 error_message = ""
 
 def p_program(p):
@@ -204,7 +205,7 @@ def p_data_type_and_value_error(p):
     print("Error en el tipo de dato inicializado: ", p[3].value, " no pertenece a los datos de tipo", p[1] )
 
     globals()['flag'] = False
-    globals()['error_message'] = "Cannot use " + str(p[3].value) + " as type " + str(p[1]) + ' in assignment'
+    globals()['error_message'] += "Cannot use " + str(p[3].value) + " as type " + str(p[1]) + ' in assignment\n'
 
 def p_decConst(p):
     '''decConst : CONST ID data_type_and_value
@@ -422,7 +423,7 @@ def p_impresion_error(p):
     print("Syntax error in print statement. Bad expression")
 
     globals()['flag'] = False
-    globals()['error_message'] = "Syntax error in print statement. Bad expression"
+    globals()['error_message'] += "Syntax error in print statement. Bad expression\n"
 
 
 
@@ -452,80 +453,14 @@ def p_expression(p):
 # Error rule for syntax errors
 def p_error(p):
     print("Error: syntax error when parsing '{}'".format(p))
-    #globals()['flag'] = False
+    globals()['flag'] = False
+
+    if globals()['aux']:
+        globals()['error_message'] += 'Error: syntax error when parsing ' + str(p) + '\n'
+        globals()['aux'] = False
+
+
     
 # Build the parser
 parser = yacc.yacc()
  
-ListaDeclaraciones = ['var x = 4','a := 5', 'var jho = 4.5', 'saludo := "Hola"']
-ListaExpresiones = ['5+4','9*4/4','var4+var5','x>4','y<5','x>4 && y<5 && z>4']
-ListaEstructuras = ['var arra = [5]int {4,5,6}', 'var arra2 [4] float','type persona struct { nombre string edad int }','var sli [] string','var map_capitales[string]string']
-ListaMetodos = ['len (lista1)','copy (arr2, arr3)','delete(slic,var5)','append(listapalabras,"suiza")']
-ListaFunciones = ['func sum(x int, y int) int {return x + y;}','func mul(x int, y int) int {return x * y;}']
-ListaControl = ['for i<4 { print(var4) }','switch x{ case 1: print(1); default: print(0);}','if a>5 { print(var1) }']
-print('**Algoritmo de prueba**')
-print('******************************')
-print('Declaraciones')
-for pal in ListaDeclaraciones:
-    result = parser.parse(pal)
-    if result is None:
-        print('Linea Evaluada')
-        print(pal)
-        print("Resultado: Its OK!")
-    else:
-        print("Resultado: Error de sintaxis :(")
-
-print('******************************')
-print('Expresiones')
-for pal in ListaExpresiones:
-    result = parser.parse(pal)
-    if result is None:
-        print('Linea Evaluada')
-        print(pal)
-        print("Resultado: Its OK!")
-    else:
-        print("Resultado: Error de sintaxis :(")
-        
-print('******************************')        
-print('Estructura datos')
-for pal in ListaEstructuras:
-    result = parser.parse(pal)
-    if result is None:
-        print('Linea Evaluada')
-        print(pal)
-        print("Resultado: Its OK!")
-    else:
-        print("Resultado: Error de sintaxis :(")
-        
-print('******************************')
-print('Metodos')
-for pal in ListaMetodos:
-    result = parser.parse(pal)
-    if result is None:
-        print('Linea Evaluada')
-        print(pal)
-        print("Resultado: Its OK!")
-    else:
-        print("Resultado: Error de sintaxis :(")
-
-print('******************************')
-print('Funciones')
-for pal in ListaFunciones:
-    result = parser.parse(pal)
-    if result is None:
-        print('Linea Evaluada')
-        print(pal)
-        print("Resultado: Its OK!")
-    else:
-        print("Resultado: Error de sintaxis :(")
-
-print('******************************')
-print('Estructuras de control')
-for pal in ListaControl:
-    result = parser.parse(pal)
-    if result is None:
-        print('Linea Evaluada')
-        print(pal)
-        print("Resultado: Its OK!")
-    else:
-        print("Resultado: Error de sintaxis :(")

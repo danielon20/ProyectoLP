@@ -1,5 +1,8 @@
 import ply.lex as lex
 
+flag = True
+error_message = ""
+
 # CARLOS QUINONEZ
 # INICIO
 
@@ -156,7 +159,13 @@ def goLexer():
         return t
 
     def t_error(t):
-        print("Illegal character '%s'" % t.value[0])
+        #print("Illegal character '%s'" % t.value[0], "line", t.lineno, "col", t.lexpos)
+
+        globals()['flag'] = False
+        globals()['error_message'] += "Illegal character " + str(t.value[0]) + " at line " + str(t.lineno) + " and column " + str(t.lexpos) + '\n'
+
+        #print(globals()['error_message'])
+
         t.lexer.skip(1)
     
     return lex.lex()

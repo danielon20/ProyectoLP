@@ -23,6 +23,7 @@ class Form(QtWidgets.QWidget):
         lines = file.readlines()
         content = "".join(lines)
         self.ui.textEdit.setText(content)
+        file.close()
 
     def lexicalAnalysis(self):
         code = self.ui.textEdit.toPlainText()
@@ -31,14 +32,24 @@ class Form(QtWidgets.QWidget):
         lexer.input(code)
 
         tokens = ''
+        errors = ''
 
         while True:
             token = lexer.token()
             if not token:
                 break  # No more input
-            tokens += str(token) + '\n'
 
-        self.ui.textEdit_2.setText(tokens)
+            tokens += str(token) + '\n'
+            #errors += lexi.error_message
+            #lexi.error_message = ""
+
+        if not lexi.flag:
+            self.ui.textEdit_2.setText(lexi.error_message)
+            lexi.flag = True
+            lexi.error_message = ""
+        else:
+            self.ui.textEdit_2.setText(tokens)
+
 
     def syntacticalAnalysis(self):
         code = self.ui.textEdit.toPlainText()
@@ -46,6 +57,7 @@ class Form(QtWidgets.QWidget):
 
 
         syntactic.flag = True
+        syntactic.aux = True
         syntactic.error_message = ''
 
         result = parser.parse(code)
