@@ -286,11 +286,13 @@ def p_decVarOne(p):
 
 def p_if(p):
     '''SenIF : IF comparison LLLAVE codigo RLLAVE
+             | IF logic_operation LLLAVE codigo RLLAVE
              | IF TRUE LLLAVE codigo RLLAVE
              | IF FALSE LLLAVE codigo RLLAVE'''
 
 def p_elseif(p):
     '''SenElseIF : ELSE IF comparison LLLAVE codigo RLLAVE
+             | ELSE IF logic_operation LLLAVE codigo RLLAVE
              | ELSE IF TRUE LLLAVE codigo RLLAVE
              | ELSE IF FALSE LLLAVE codigo RLLAVE'''
 
@@ -458,7 +460,6 @@ def p_error(p):
     if globals()['aux']:
         globals()['error_message'] += 'Error: syntax error when parsing ' + str(p.value) + " at line " + str(p.lineno) + " and column " + str(p.lexpos) + '\n'
         globals()['aux'] = False
-
 
     
 # Build the parser
