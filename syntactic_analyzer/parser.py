@@ -476,6 +476,8 @@ def p_error(p):
             globals()['aux'] = False
     else:
         print("end of line unexpected")
+        globals()['error_message'] = "end of line unexpected"
+
 
 
     
