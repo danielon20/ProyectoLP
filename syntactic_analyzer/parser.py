@@ -278,8 +278,7 @@ def p_slice_assignment(p):
                         | operations'''
 
 def p_for(p):
-    '''cicloFor : FOR LLLAVE codigo RLLAVE
-                | FOR comparison LLLAVE codigo RLLAVE
+    '''cicloFor : FOR comparison LLLAVE codigo RLLAVE
                 | FOR logic_operation LLLAVE codigo RLLAVE
                 | FOR decVarOne COLON comparison COLON incre LLLAVE codigo RLLAVE
        incre    : ID INCREASE
